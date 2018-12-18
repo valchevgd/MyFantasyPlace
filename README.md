@@ -7,12 +7,12 @@ About
 
 Features
 
-●User’s registration
-●Select players
-●Pick players for tournaments
-●Upgrade players
-●Chat with others users
-●Admin panel
+User’s registration
+Select players
+Pick players for tournaments
+Upgrade players
+Chat with others users
+Admin panel
 
 
 Rules
