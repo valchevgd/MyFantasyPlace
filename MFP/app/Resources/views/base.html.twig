@@ -63,6 +63,24 @@
                         <li class="nav-item" style="font-size: large">
                             <a class="nav-link" href="#"><span style="color: white">Logout</span></a>
                         </li>
+                    {% else %}
+                        <li class="nav-item" style="font-size: large">
+                            <a class="nav-link" href="{{ path('user_register') }}"><span style="color: white">Register</span></a>
+                        </li>
+                        <li class="nav-item" style="font-size: large">
+                            <span class="nav-link" style="color: white">or</span>
+                        </li>
+                        <li class="nav-item" style="font-size: large">
+                            <span class="nav-link" style="color: white">Login :</span>
+                        </li>
+                        <li>
+                            <form class="form-inline my-2 my-lg-0" name="authenticate" action="" method="post">
+                                <input class="form-control mr-sm-2" type="text" placeholder="Email">
+                                <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Search">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                                <input type="submit" value="Login">
+                            </form>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
@@ -70,7 +88,7 @@
     </header>
 {% endblock %}
 
-<div class="container body-container">
+<div class="container body-container" style="padding-top: 50px">
     {% block body %}
         <div class="row">
             <div id="main" class="col-sm-9">
@@ -82,7 +100,7 @@
 
 {% block footer %}
     <footer>
-        <div class="container modal-footer">
+        <div class="container modal-footer fixed-bottom">
             <p>&copy; valchevgd</p>
         </div>
     </footer>
