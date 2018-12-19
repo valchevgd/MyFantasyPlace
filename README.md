@@ -7,6 +7,7 @@ This is the project for my final exam on “PHP MVC Frameworks - Symfony” cour
 
 ### Features
 
+- Sports: darts and snooker
 - User’s registration </br>
 - Select players </br>
 - Pick players for tournaments </br>
