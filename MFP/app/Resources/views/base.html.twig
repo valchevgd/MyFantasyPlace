@@ -20,7 +20,7 @@
     <header>
         <nav class="navbar navbar-collapse navbar-expand-lg sticky-top navbar-dark bg-primary navbar-right"
              role="navigation">
-            <a class="navbar-brand" href="#">MFP</a>
+            <a class="navbar-brand" href="{{ path('index') }}">MFP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -88,7 +88,7 @@
     </header>
 {% endblock %}
 
-<div class="container body-container" style="padding-top: 50px">
+<div class="container body-container" style="padding-top: 20px">
     {% block body %}
         <div class="row">
             <div id="main" class="col-sm-9">

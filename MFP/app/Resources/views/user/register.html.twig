@@ -1,23 +1,30 @@
 {% extends 'base.html.twig' %}
 {% block main %}
     <div class="container body-content col-sm-6">
-        <form name="register" method="post">
+
+        {% for msg in app.session.flashBag.get('message') %}
+            <div class="alert alert-danger">
+                {{ msg }}
+            </div>
+        {% endfor %}
+
+        <form method="post" name="register">
             <div class="form-group">
-                <input class="form-control" type="text" placeholder="Username" name="user[username]">
+                <input class="form-control" type="text"   required="required" placeholder="Username" name="user[username]" />
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" placeholder="Email" name="user[email]">
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" placeholder="Password" name="user[password]">
+                <input class="form-control" type="password"  placeholder="Password" name="user[password]">
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" placeholder="Confirm Password" name="user[confirmPassword]">
+                <input class="form-control" type="password"  placeholder="Confirm Password" name="confirmPassword">
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" placeholder="Full Name" name="user[fullName]">
             </div>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}"/>
+            {{ form_row(form._token) }}
             <input class="btn btn-outline-primary" type="submit" value="Register">
         </form>
     </div>

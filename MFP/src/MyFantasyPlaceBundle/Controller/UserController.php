@@ -4,14 +4,30 @@ namespace MyFantasyPlaceBundle\Controller;
 
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\UserType;
+use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends Controller
 {
     /**
-     * @Route("register", name="user_register")
+     * @var UserServiceInterface
+     */
+    private $userService;
+
+    /**
+     * @param UserServiceInterface $userService
+     */
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
+
+    /**
+     * @Route("/register", name="user_register")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -22,8 +38,18 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($request){
-            var_dump($user);
+        if ($form->isSubmitted() and $form->isValid()) {
+
+            $confirmPassword = $request->request->get('confirmPassword');
+
+            try{
+                $this->userService->register($user, $confirmPassword);
+
+            }catch (Exception $exception){
+                $this->addFlash('message', $exception->getMessage());
+            }
+
+            return $this->redirectToRoute("index");
         }
 
         return $this->render("user/register.html.twig", [
