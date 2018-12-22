@@ -13,5 +13,5 @@ use MyFantasyPlaceBundle\Entity\User;
 
 interface UserServiceInterface
 {
-    public function register(User $user, string $confirmPassword);
+    public function register(User $user);
 }

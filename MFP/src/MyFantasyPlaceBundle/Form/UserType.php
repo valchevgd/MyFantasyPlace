@@ -3,6 +3,8 @@
 namespace MyFantasyPlaceBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,13 +15,21 @@ class UserType extends AbstractType
     {
         $builder->add("username", TextType::class)
             ->add("email", TextType::class)
-            ->add("password", TextType::class)
+            ->add('password',
+                RepeatedType::class,
+                [
+                    'type' => PasswordType::class,
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Repeat Password']
+                ])
             ->add("fullName", TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
+        $resolver->setDefaults(array(
+            'data_class' => 'MyFantasyPlaceBundle\Entity\User'
+        ));
     }
 
 }

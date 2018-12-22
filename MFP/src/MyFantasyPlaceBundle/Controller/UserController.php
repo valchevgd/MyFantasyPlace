@@ -40,10 +40,11 @@ class UserController extends Controller
 
         if ($form->isSubmitted() and $form->isValid()) {
 
-            $confirmPassword = $request->request->get('confirmPassword');
+            var_dump($user);
+            exit();
 
             try{
-                $this->userService->register($user, $confirmPassword);
+                $this->userService->register($user);
 
             }catch (Exception $exception){
                 $this->addFlash('message', $exception->getMessage());

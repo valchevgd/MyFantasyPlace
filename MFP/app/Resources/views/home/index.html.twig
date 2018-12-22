@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if app.user %}
+    {% else %}
+        <div class="container body-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <article>
+                        <h1 style="text-align: center">Features</h1>
+                        <div style="margin: 10px; padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+                            <ul>
+                                <li>Sports: darts and snooker</li>
+                                <li>Select players</li>
+                                <li>Pick players for tournaments</li>
+                                <li>Upgrade players</li>
+                                <li>Chat with others users</li>
+                            </ul>
+                            <p>And many more</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6">
+                    <article>
+                        <h1 style="text-align: center">Rules</h1>
+                        <div style="margin: 10px; padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+                            Any user has 35 game coins for each sport to pick? 5 players from this sport. For any
+                            tournament users can select 3 players from his squad with а total value up to 20 tournament
+                            coins. Players value depends on the points in World rankings.
+                            Snooker players win 0.1 point for every real point in the game. 5 pts for break between 50
+                            and 59 pts, 6 pts for break between 60 and 69 points in the game and so on until break over
+                            100. Fore any break over 100 the player wins total break value divide by 10. The sum of all
+                            of player’s points is added to user’s points for this tournament. The user with most fantasy
+                            points wins the tournament, no matter when in the real tournament his players are eliminated
+                            or not.This fantasy points will be added in user’s total fantasy tokens. This tokens can be
+                            used for upgrading his own players.
+                            In darts competitions any player wins points for throwing 180’s (2.8 pts for each), over 140
+                            (1.4 pts for each) and over 100 (0.6 for each). Alsol average by 3 darts divide by 10 and
+                            check-out percent divide by 10 . This points are added to fantasy his tokens too.
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

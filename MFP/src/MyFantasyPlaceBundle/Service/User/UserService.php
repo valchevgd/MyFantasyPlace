@@ -37,7 +37,7 @@ class UserService implements UserServiceInterface
     }
 
 
-    public function register(\MyFantasyPlaceBundle\Entity\User $user, string $confirmPassword)
+    public function register(\MyFantasyPlaceBundle\Entity\User $user)
     {
         $userByUsername = $this->userRepository->findBy(['username' => $user->getUsername()]);
 
@@ -49,10 +49,6 @@ class UserService implements UserServiceInterface
 
         if ($userByEmail) {
             throw new Exception('Email is already taken!');
-        }
-
-        if ($user->getPassword() != $confirmPassword) {
-            throw new Exception('Password and confirm password miss match');
         }
 
         $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
