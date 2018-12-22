@@ -18,83 +18,130 @@
 
 {% block header %}
     <header>
-        <nav class="navbar navbar-collapse navbar-expand-lg sticky-top navbar-right" style="background-color: greenyellow"
+        <div class="navbar navbar-collapse navbar-expand-lg sticky-top navbar-right text-uppercase"
+             style="background-color: greenyellow"
              role="navigation">
-            <a class="navbar-brand" href="{{ path('index') }}" style="color: black">MFP</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item" style="font-size: large">
-                        <a class="nav-link" href="#"><span style="color: black">Statistics</span></a>
-                    </li>
-                    {% if app.user %}
-                        <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Snooker')"
-                            onmouseout="hideDropdown('Snooker')">
-                            <div class="dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                                   role="button" aria-haspopup="true" aria-expanded="true"><span
-                                            style="color: black">Snooker</span></a>
-                                <div id="Snooker" class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">My players</a>
-                                    <a class="dropdown-item" href="#">Active players</a>
-                                    <a class="dropdown-item" href="#">Update players</a>
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path('index') }}" style="color: black">MFP</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" style="font-size: large">
+                            <a class="nav-link" href="#"><span style="color: black">Statistics</span></a>
+                        </li>
+                        {% if app.user and app.user.isAdmin != 1 %}
+                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Snooker')"
+                                onmouseout="hideDropdown('Snooker')">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                       role="button" aria-haspopup="true" aria-expanded="true"><span
+                                                style="color: black">Snooker</span></a>
+                                    <div id="Snooker" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">My players</a>
+                                        <a class="dropdown-item" href="#">Active players</a>
+                                        <a class="dropdown-item" href="#">Update players</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Darts')"
-                            onmouseout="hideDropdown('Darts')">
-                            <div class="dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                                   role="button" aria-haspopup="true" aria-expanded="true"><span
-                                            style="color: black">Darts</span></a>
-                                <div id="Snooker" class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">My players</a>
-                                    <a class="dropdown-item" href="#">Active players</a>
-                                    <a class="dropdown-item" href="#">Update players</a>
+                            </li>
+                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Darts')"
+                                onmouseout="hideDropdown('Darts')">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                       role="button" aria-haspopup="true" aria-expanded="true"><span
+                                                style="color: black">Darts</span></a>
+                                    <div id="Snooker" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">My players</a>
+                                        <a class="dropdown-item" href="#">Active players</a>
+                                        <a class="dropdown-item" href="#">Update players</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="nav-item" style="font-size: large">
-                            <a class="nav-link" href="#"><span style="color: black">My Profile</span></a>
-                        </li>
-                        <li class="nav-item" style="font-size: large">
-                            <a class="nav-link" href="{{ path('security_logout') }}"><span style="color: black">Logout</span></a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item" style="font-size: large">
-                            <a class="nav-link" href="{{ path('user_register') }}"><span style="color: black">Register</span></a>
-                        </li>
-                        {#<li class="nav-item" style="font-size: large">
-                            <span class="nav-link" style="color: white">or</span>
-                        </li>#}
-                        <li class="nav-item" style="font-size: large">
-                            <a class="nav-link" href="{{ path('security_login') }}"><span style="color: black">Login</span></a>
-                        </li>
-                        {#<li>
-                            <form class="form-inline my-2 my-lg-0" name="authenticate" action="{{ path('security_login') }}" method="post" role="form">
-                                <input class="form-control mr-sm-2" type="text" placeholder="Username" name="_username">
-                                <input class="form-control mr-sm-2" type="password" placeholder="Password" name="_password">
-                                <input type="submit" value="Login">
-                            </form>
-                        </li>#}
-                    {% endif %}
-                </ul>
+                            </li>
+                        {% elseif app.user and app.user.isAdmin == 1 %}
+                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Snooker')"
+                                onmouseout="hideDropdown('Snooker')">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                       role="button" aria-haspopup="true" aria-expanded="true"><span
+                                                style="color: black">snooker Data</span></a>
+                                    <div id="Snooker" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">add results</a>
+                                        <a class="dropdown-item" href="#">add player</a>
+                                        <a class="dropdown-item" href="#">remove player</a>
+                                        <a class="dropdown-item" href="#">add tournament</a>
+                                        <a class="dropdown-item" href="#">start tournament</a>
+                                        <a class="dropdown-item" href="#">end tournament</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Darts')"
+                                onmouseout="hideDropdown('Darts')">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                                       role="button" aria-haspopup="true" aria-expanded="true"><span
+                                                style="color: black">Darts Data</span></a>
+                                    <div id="Snooker" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">add results</a>
+                                        <a class="dropdown-item" href="#">add player</a>
+                                        <a class="dropdown-item" href="#">remove player</a>
+                                        <a class="dropdown-item" href="#">add tournament</a>
+                                        <a class="dropdown-item" href="#">start tournament</a>
+                                        <a class="dropdown-item" href="#">end tournament</a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                        {% if app.user %}
+                            <li class="nav-item" style="font-size: large">
+                                <a class="nav-link" href="#"><span style="color: black">My Profile</span></a>
+                            </li>
+                            <li class="nav-item" style="font-size: large">
+                                <a class="nav-link" href="{{ path('security_logout') }}"><span style="color: black">Logout</span></a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item" style="font-size: large">
+                                <a class="nav-link" href="{{ path('user_register') }}"><span style="color: black">Register</span></a>
+                            </li>
+                            <li class="nav-item" style="font-size: large">
+                                <a class="nav-link" href="{{ path('security_login') }}"><span
+                                            style="color: black">Login</span></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-        </nav>
+        </div>
+        {% if app.user and app.user.isAdmin != 1 %}
+            <div class="navbar navbar-default navbar-fixed-top"
+                 style="background-color: darkred">
+                <div class="container">
+                    <span style="color: white">Fantasy Tokens : {{ app.user.fantasyTokens }}</span>
+                    <span style="color: white">Snooker Team Budget : {{ app.user.snookerTeamValue }}</span>
+                    <span style="color: white">Snooker Tournament Budget : {{ app.user.snookerTournamentTeamValue }}</span>
+                    <span style="color: white">Darts Team Budget : {{ app.user.dartsTeamValue }}</span>
+                    <span style="color: white">Darts Tournament Budget : {{ app.user.dartsTournamentTeamValue }}</span>
+                </div>
+            </div>
+        {% endif %}
     </header>
 {% endblock %}
 
-<div class="container body-container" style="padding-top: 20px">
-    {% block body %}
-        <div class="row">
-            <div id="main" class="col-md-9">
-                {% block main %}{% endblock %}
+<div class="container body-container" style="padding-top: 10px">
+    <div style="padding-bottom: 10px">
+        {% block body %}
+            <div class="row">
+                <div id="main" class="col-md-9">
+                    {% block main %}{% endblock %}
+                </div>
             </div>
-        </div>
-    {% endblock %}
+        {% endblock %}
+    </div>
 </div>
 
 {% block footer %}

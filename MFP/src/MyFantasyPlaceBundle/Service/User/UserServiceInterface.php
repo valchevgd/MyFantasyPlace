@@ -14,4 +14,8 @@ use MyFantasyPlaceBundle\Entity\User;
 interface UserServiceInterface
 {
     public function register(User $user);
+
+    public function getSnookerRank();
+
+    public function getDartsRank();
 }

@@ -58,4 +58,18 @@ class UserService implements UserServiceInterface
         $this->userRepository->createUser($user);
 
     }
+
+    public function getSnookerRank()
+    {
+        $rank = $this->userRepository->findBy([],['snookerTotalPoints' => 'desc'], 5);
+
+        return $rank;
+    }
+
+    public function getDartsRank()
+    {
+        $rank = $this->userRepository->findBy([],['dartsTotalPoints' => 'desc'], 5);
+
+        return $rank;
+    }
 }
