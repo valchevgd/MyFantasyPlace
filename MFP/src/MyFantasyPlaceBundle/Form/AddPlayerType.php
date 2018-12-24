@@ -12,8 +12,8 @@ class AddPlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('playerName', TextType::class)
-            ->add('playerValue', NumberType::class);
+        $builder->add('name', TextType::class)
+            ->add('value', NumberType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

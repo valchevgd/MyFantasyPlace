@@ -24,7 +24,7 @@ class DartsPlayer
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -78,6 +78,13 @@ class DartsPlayer
     private $tournamentAverageThreeDarts = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="tournament_games_played", type="integer")
+     */
+    private $tournamentGamesPlayed = 0;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="tournament_fantasy_points", type="float")
@@ -118,6 +125,51 @@ class DartsPlayer
      * @ORM\Column(name="season_average_three_darts", type="float")
      */
     private $seasonAverageThreeDarts = 0;
+
+    /**
+     * @return int
+     */
+    public function getTournamentGamesPlayed()
+    {
+        return $this->tournamentGamesPlayed;
+    }
+
+    /**
+     * @param int $tournamentGamesPlayed
+     * @return DartsPlayer
+     */
+    public function setTournamentGamesPlayed(int $tournamentGamesPlayed)
+    {
+        $this->tournamentGamesPlayed = $tournamentGamesPlayed;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSeasonGamesPlayed()
+    {
+        return $this->seasonGamesPlayed;
+    }
+
+    /**
+     * @param int $seasonGamesPlayed
+     * @return DartsPlayer
+     */
+    public function setSeasonGamesPlayed(int $seasonGamesPlayed)
+    {
+        $this->seasonGamesPlayed = $seasonGamesPlayed;
+
+        return $this;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="season_games_played", type="integer")
+     */
+    private $seasonGamesPlayed = 0;
 
     /**
      * @var float

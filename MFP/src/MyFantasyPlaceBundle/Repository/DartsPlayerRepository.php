@@ -2,6 +2,10 @@
 
 namespace MyFantasyPlaceBundle\Repository;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
+use MyFantasyPlaceBundle\Entity\DartsPlayer;
+
 /**
  * DartsPlayerRepository
  *
@@ -10,4 +14,16 @@ namespace MyFantasyPlaceBundle\Repository;
  */
 class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(DartsPlayer::class));
+    }
+
+    public function insert(DartsPlayer $player)
+    {
+        $this->_em->persist($player);
+        $this->_em->flush();
+
+        return true;
+    }
 }
