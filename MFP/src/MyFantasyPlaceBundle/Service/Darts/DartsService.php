@@ -72,6 +72,9 @@ class DartsService implements DartsServiceInterface
         $dartsPlayer->setSeasonAverageThreeDarts($dartsPlayer->getSeasonAverageThreeDarts() + $formData->getAverageThreeDarts());
         $dartsPlayer->setSeasonGamesPlayed($dartsPlayer->getSeasonGamesPlayed() + 1);
 
+        $dartsPlayer->setValue($formData->getValue());
+        $dartsPlayer->setStatus($formData->getStatus());
+
         $this->dartsPlayerRepository->update($dartsPlayer);
     }
 }

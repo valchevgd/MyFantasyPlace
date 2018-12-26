@@ -85,6 +85,9 @@ class SnookerService implements SnookerServiceInterface
         $snookerPlayer->setTournamentFantasyPoints($snookerPlayer->getTournamentFantasyPoints() + $fantasyPoints);
         $snookerPlayer->setSeasonPoints($snookerPlayer->getSeasonFantasyPoints() + $fantasyPoints);
 
+        $snookerPlayer->setValue($formData->getValue());
+        $snookerPlayer->setStatus($formData->getStatus());
+
         $this->snookerPlayerRepository->update($snookerPlayer);
     }
 }
