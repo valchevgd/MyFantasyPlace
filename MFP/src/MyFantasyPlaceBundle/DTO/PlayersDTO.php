@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: valchevgd
- * Date: 12/24/2018
- * Time: 3:58 PM
- */
 
 namespace MyFantasyPlaceBundle\DTO;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class PlayersToRemoveDTO
+class PlayersDTO
 {
     /**
      * @var ArrayCollection

@@ -41,4 +41,10 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->remove($player);
         $this->_em->flush();
     }
+
+    public function update(SnookerPlayer $snookerPlayer)
+    {
+        $this->_em->persist($snookerPlayer);
+        $this->_em->flush();
+    }
 }

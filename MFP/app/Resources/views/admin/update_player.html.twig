@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content col-sm-8"
+         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form(form) }}
+
+        {% if player.id != null %}
+            <div class="col-sm-4">
+                {% form_theme form2 'bootstrap_3_layout.html.twig' %}
+                {{ form(form2) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+

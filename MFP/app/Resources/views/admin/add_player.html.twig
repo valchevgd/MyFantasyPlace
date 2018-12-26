@@ -2,7 +2,7 @@
 
 {% block main %}
 
-    <div class="container body-content col-sm-6">
+    <div class="container body-content col-sm-6" style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
 
         {% for msg in app.session.flashBag.get('message') %}
             <div class="alert alert-secondary ">
@@ -10,7 +10,7 @@
             </div>
         {% endfor %}
 
-       <form method="post" name="add_player" action="{{ path('add_snooker_player') }}">
+       <form method="post" name="add_player">
             <div class="form-group">
                 <input class="form-control" type="text"   required="required" placeholder="Player name" name="add_player[name]" />
             </div>

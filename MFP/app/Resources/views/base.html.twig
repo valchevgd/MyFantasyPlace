@@ -64,34 +64,30 @@
                                 </div>
                             </li>
                         {% elseif app.user and app.user.isAdmin == 1 %}
-                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Snooker')"
-                                onmouseout="hideDropdown('Snooker')">
+                            <li class="nav-item dropdown" style="font-size: large">
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                                        role="button" aria-haspopup="true" aria-expanded="true"><span
-                                                style="color: black">snooker Data</span></a>
+                                                style="color: black">snooker data</span></a>
                                     <div id="Snooker" class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">add results</a>
                                         <a class="dropdown-item" href="{{ path('add_snooker_player') }}">add player</a>
-                                        <a class="dropdown-item" href="{{ path('remove_snooker_player') }}">remove player</a>
-                                        <a class="dropdown-item" href="#">update players value</a>
+                                        <a class="dropdown-item" href="{{ path('remove_snooker_player') }}">remove players</a>
+                                        <a class="dropdown-item" href="{{ path('update_snooker_players') }}">update players</a>
                                         <a class="dropdown-item" href="#">add tournament</a>
                                         <a class="dropdown-item" href="#">start tournament</a>
                                         <a class="dropdown-item" href="#">end tournament</a>
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown" style="font-size: large" onmouseover="showDropdown('Darts')"
-                                onmouseout="hideDropdown('Darts')">
+                            <li class="nav-item dropdown" style="font-size: large" >
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                                        role="button" aria-haspopup="true" aria-expanded="true"><span
                                                 style="color: black">Darts Data</span></a>
                                     <div id="Snooker" class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">add results</a>
                                         <a class="dropdown-item" href="{{ path('add_darts_player') }}">add player</a>
-                                        <a class="dropdown-item" href="#">remove player</a>
-                                        <a class="dropdown-item" href="#">update players value</a>
+                                        <a class="dropdown-item" href="{{ path('remove_darts_player') }}">remove players</a>
+                                        <a class="dropdown-item" href="{{ path('update_darts_players') }}">update players</a>
                                         <a class="dropdown-item" href="#">add tournament</a>
                                         <a class="dropdown-item" href="#">start tournament</a>
                                         <a class="dropdown-item" href="#">end tournament</a>
@@ -135,7 +131,7 @@
 {% endblock %}
 
 <div class="container body-container" style="padding-top: 10px">
-    <div style="padding-bottom: 10px">
+    <div style="padding-bottom: 20px">
         {% block body %}
             <div class="row">
                 <div id="main" class="col-md-9">
@@ -148,8 +144,12 @@
 
 {% block footer %}
     <footer>
-        <div class="container modal-footer fixed-bottom" style="color: white">
-            <p>&copy; valchevgd</p>
+        <div class="container modal-footer">
+            <div class="navbar fixed-bottom" style="background-color: darkgreen">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item "><h6 style="color: white">&copy; valchevgd</h6></li>
+                </ul>
+            </div>
         </div>
     </footer>
 {% endblock %}

@@ -9,9 +9,14 @@
 namespace MyFantasyPlaceBundle\Service\Darts;
 
 
+use MyFantasyPlaceBundle\DTO\DartsPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\Entity\DartsPlayer;
 
 interface DartsServiceInterface
 {
     public function addPlayer(DartsPlayer $player);
+
+    public function removePlayers($players);
+
+    public function updatePlayer(DartsPlayerToUpdateDTO $formData);
 }

@@ -14,6 +14,7 @@ class AddPlayerType extends AbstractType
     {
         $builder->add('name', TextType::class)
             ->add('value', NumberType::class);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,31 +1,34 @@
 {% extends 'base.html.twig' %}
 {% block main %}
     <div class="container body-content col-sm-6">
+        <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+            {% for msg in app.session.flashBag.get('message') %}
+                <div class="alert alert-danger">
+                    {{ msg }}
+                </div>
+            {% endfor %}
 
-        {% for msg in app.session.flashBag.get('message') %}
-            <div class="alert alert-danger">
-                {{ msg }}
-            </div>
-        {% endfor %}
-
-        <form method="post" name="register">
-            <div class="form-group">
-                <input class="form-control" type="text"   required="required" placeholder="Username" name="user[username]" />
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="text" placeholder="Email" name="user[email]">
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="password"  placeholder="Password" name="user[password][first]">
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="password"  placeholder="Confirm Password" name="user[password][second]">
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="text" placeholder="Full Name" name="user[fullName]">
-            </div>
-            {{ form_row(form._token) }}
-            <input class="btn btn-outline-light" type="submit" value="Register">
-        </form>
+            <form method="post" name="register">
+                <div class="form-group">
+                    <input class="form-control" type="text" required="required" placeholder="Username"
+                           name="user[username]"/>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Email" name="user[email]">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" placeholder="Password" name="user[password][first]">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" placeholder="Confirm Password"
+                           name="user[password][second]">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Full Name" name="user[fullName]">
+                </div>
+                {{ form_row(form._token) }}
+                <input class="btn btn-outline-light" type="submit" value="Register">
+            </form>
+        </div>
     </div>
 {% endblock %}

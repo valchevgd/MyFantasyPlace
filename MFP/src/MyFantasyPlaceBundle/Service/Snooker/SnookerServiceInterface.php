@@ -9,13 +9,17 @@
 namespace MyFantasyPlaceBundle\Service\Snooker;
 
 
+use MyFantasyPlaceBundle\DTO\SnookerPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\Entity\SnookerPlayer;
 
 interface SnookerServiceInterface
 {
     public function addPlayer(SnookerPlayer $player);
 
-    public function getAllNames();
 
     public function removePlayers($players);
+
+    public function getList();
+
+    public function updatePlayer(SnookerPlayerToUpdateDTO $formData);
 }
