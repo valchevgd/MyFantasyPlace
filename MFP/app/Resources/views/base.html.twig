@@ -70,11 +70,11 @@
                                        role="button" aria-haspopup="true" aria-expanded="true"><span
                                                 style="color: black">snooker data</span></a>
                                     <div id="Snooker" class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ path('add_snooker_player') }}">add player</a>
-                                        <a class="dropdown-item" href="{{ path('remove_snooker_player') }}">remove players</a>
-                                        <a class="dropdown-item" href="{{ path('update_snooker_players') }}">update players</a>
-                                        <a class="dropdown-item" href="#">add tournament</a>
-                                        <a class="dropdown-item" href="#">start tournament</a>
+                                        <a class="dropdown-item" href="{{ path('add_player', {'type':'snooker'}) }}">add player</a>
+                                        <a class="dropdown-item" href="{{ path('remove_players', {'type':'snooker'}) }}">remove players</a>
+                                        <a class="dropdown-item" href="{{ path('update_player', {'type':'snooker'}) }}">update players</a>
+                                        <a class="dropdown-item" href="{{ path('add_tournament', {'type':'snooker'}) }}">add tournament</a>
+                                        <a class="dropdown-item" href="{{ path('start_tournament', {'type':'snooker'}) }}">start tournament</a>
                                         <a class="dropdown-item" href="#">end tournament</a>
                                     </div>
                                 </div>
@@ -85,11 +85,11 @@
                                        role="button" aria-haspopup="true" aria-expanded="true"><span
                                                 style="color: black">Darts Data</span></a>
                                     <div id="Snooker" class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ path('add_darts_player') }}">add player</a>
-                                        <a class="dropdown-item" href="{{ path('remove_darts_player') }}">remove players</a>
-                                        <a class="dropdown-item" href="{{ path('update_darts_players') }}">update players</a>
-                                        <a class="dropdown-item" href="#">add tournament</a>
-                                        <a class="dropdown-item" href="#">start tournament</a>
+                                        <a class="dropdown-item" href="{{ path('add_player', {'type':'darts'}) }}">add player</a>
+                                        <a class="dropdown-item" href="{{ path('remove_players', {'type':'darts'}) }}">remove players</a>
+                                        <a class="dropdown-item" href="{{ path('update_player', {'type':'darts'}) }}">update players</a>
+                                        <a class="dropdown-item" href="{{ path('add_tournament', {'type':'darts'}) }}">add tournament</a>
+                                        <a class="dropdown-item" href="{{ path('start_tournament', {'type':'darts'}) }}">start tournament</a>
                                         <a class="dropdown-item" href="#">end tournament</a>
                                     </div>
                                 </div>

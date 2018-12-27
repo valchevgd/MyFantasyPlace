@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content col-sm-6" style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        <h3>{{ type[0].name }}</h3>
+        <hr>
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form(form) }}
+    </div>
+{% endblock %}
+

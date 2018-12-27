@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content col-sm-6">
+        <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+            {% for msg in app.session.flashBag.get('message') %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endfor %}
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}
+

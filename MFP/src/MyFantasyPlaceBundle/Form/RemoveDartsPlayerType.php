@@ -16,11 +16,11 @@ class RemoveDartsPlayerType extends AbstractType
         $builder->add('Players', EntityType::class, [
             'class' => DartsPlayer::class,
             'choice_label' => 'name',
-            'label' => 'Select Players To Remove',
+            'label' => 'Select Players',
             'multiple' => 'true',
             'expanded' => 'true'
         ])
-            ->add('Remove', SubmitType::class);
+            ->add('Select', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
