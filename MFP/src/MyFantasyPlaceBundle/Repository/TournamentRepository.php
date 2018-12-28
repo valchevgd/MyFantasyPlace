@@ -26,4 +26,10 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function update(Tournament $nextTournament)
+    {
+        $this->_em->persist($nextTournament);
+        $this->_em->flush();
+    }
 }

@@ -3,6 +3,11 @@
 {% block main %}
     <div class="container body-content col-sm-8"
          style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        {% for msg in app.session.flashBag.get('message') %}
+            <div class="alert alert-secondary ">
+                {{ msg }}
+            </div>
+        {% endfor %}
         {% form_theme form 'bootstrap_3_layout.html.twig' %}
         {{ form(form) }}
 

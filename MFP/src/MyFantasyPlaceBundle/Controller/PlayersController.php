@@ -168,7 +168,7 @@ class PlayersController extends Controller
             $typeToUpdate = 'update'.ucfirst($type).'Player';
 
             $this->playersService->$typeToUpdate($dataFromForm);
-
+            $this->addFlash('message', 'The player is successfully update!');
            return $this->redirectToRoute('update_player', [
                'type' => $type
            ]);

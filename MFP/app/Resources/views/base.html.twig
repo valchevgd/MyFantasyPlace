@@ -63,6 +63,9 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="nav-item" style="font-size: large">
+                                <a class="nav-link" href="#"><span style="color: black">My Profile</span></a>
+                            </li>
                         {% elseif app.user and app.user.isAdmin == 1 %}
                             <li class="nav-item dropdown" style="font-size: large">
                                 <div class="dropdown">
@@ -75,7 +78,7 @@
                                         <a class="dropdown-item" href="{{ path('update_player', {'type':'snooker'}) }}">update players</a>
                                         <a class="dropdown-item" href="{{ path('add_tournament', {'type':'snooker'}) }}">add tournament</a>
                                         <a class="dropdown-item" href="{{ path('start_tournament', {'type':'snooker'}) }}">start tournament</a>
-                                        <a class="dropdown-item" href="#">end tournament</a>
+                                        <a class="dropdown-item" href="{{ path('finish_tournament', {'type':'snooker'}) }}">finish tournament</a>
                                     </div>
                                 </div>
                             </li>
@@ -90,15 +93,12 @@
                                         <a class="dropdown-item" href="{{ path('update_player', {'type':'darts'}) }}">update players</a>
                                         <a class="dropdown-item" href="{{ path('add_tournament', {'type':'darts'}) }}">add tournament</a>
                                         <a class="dropdown-item" href="{{ path('start_tournament', {'type':'darts'}) }}">start tournament</a>
-                                        <a class="dropdown-item" href="#">end tournament</a>
+                                        <a class="dropdown-item" href="{{ path('finish_tournament', {'type':'darts'}) }}">finish tournament</a>
                                     </div>
                                 </div>
                             </li>
                         {% endif %}
                         {% if app.user %}
-                            <li class="nav-item" style="font-size: large">
-                                <a class="nav-link" href="#"><span style="color: black">My Profile</span></a>
-                            </li>
                             <li class="nav-item" style="font-size: large">
                                 <a class="nav-link" href="{{ path('security_logout') }}"><span style="color: black">Logout</span></a>
                             </li>

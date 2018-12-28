@@ -27,15 +27,6 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function getNames()
-    {
-        return $this->_em->createQueryBuilder()
-            ->select('p.name')
-            ->from('MyFantasyPlaceBundle:SnookerPlayer', 'p')
-            ->getQuery()
-            ->execute();
-    }
-
     public function remove($player)
     {
         $this->_em->remove($player);
@@ -45,6 +36,12 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
     public function update(SnookerPlayer $snookerPlayer)
     {
         $this->_em->persist($snookerPlayer);
+        $this->_em->flush();
+    }
+
+    public function updateStatus(SnookerPlayer $player)
+    {
+        $this->_em->persist($player);
         $this->_em->flush();
     }
 }

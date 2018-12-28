@@ -6,13 +6,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Snooker rank</h3>
+                        <h3 style="text-align: center; color: white">Snooker Users rank</h3>
                         <table>
                             <tr>
                                 <th>Name</th>
                                 <th>Points</th>
                             </tr>
-                            {% for user in snookerRank %}
+                            {% for user in usersSnookerRank %}
                                 <tr>
                                     <td>{{ user.fullName }}</td>
                                     <td>{{ user.snookerTotalPoints }}</td>
@@ -23,16 +23,50 @@
                 </div>
                 <div class="col-md-6">
                     <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Darts rank</h3>
+                        <h3 style="text-align: center; color: white">Darts Users rank</h3>
                         <table>
                             <tr>
                                 <th>Name</th>
                                 <th>Points</th>
                             </tr>
-                            {% for user in dartsRank %}
+                            {% for user in usersDartsRank %}
                                 <tr>
                                     <td>{{ user.fullName }}</td>
                                     <td>{{ user.dartsTotalPoints }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                        <h3 style="text-align: center; color: white">Snooker Players rank</h3>
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Points</th>
+                            </tr>
+                            {% for player in playersSnookerRank %}
+                                <tr>
+                                    <td>{{ player.name }}</td>
+                                    <td>{{ player.seasonFantasyPoints }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                        <h3 style="text-align: center; color: white">Darts Players rank</h3>
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Points</th>
+                            </tr>
+                            {% for player in playersDartsRank %}
+                                <tr>
+                                    <td>{{ player.name }}</td>
+                                    <td>{{ player.seasonFantasyPoints }}</td>
                                 </tr>
                             {% endfor %}
                         </table>

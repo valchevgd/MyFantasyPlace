@@ -132,4 +132,13 @@ class PlayersService implements PlayersServiceInterface
 
         $this->snookerPlayerRepository->update($snookerPlayer);
     }
+
+    public function getRank(string $type)
+    {
+        $repository = $type . 'PlayerRepository';
+
+        $rank = $this->$repository->findBy([],['seasonFantasyPoints' => 'desc'], 5);
+
+        return $rank;
+    }
 }

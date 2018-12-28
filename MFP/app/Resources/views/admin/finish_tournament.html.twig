@@ -10,12 +10,13 @@
         {% endfor %}
         {% if tournament != null %}
             <h3>{{ tournament.name }}</h3>
+            <h6>Are you sure you want to finish this running tournament?</h6>
             <hr>
             {% form_theme form 'bootstrap_3_layout.html.twig' %}
             {{ form(form) }}
         {% else %}
             <div class="alert alert-secondary ">
-                <h5>No upcoming tournaments!</h5>
+                <h5>No running tournaments!</h5>
             </div>
         {% endif %}
     </div>
