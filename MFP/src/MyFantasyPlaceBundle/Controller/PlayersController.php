@@ -3,19 +3,15 @@
 namespace MyFantasyPlaceBundle\Controller;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use MyFantasyPlaceBundle\DTO\DartsPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\DTO\PlayersDTO;
-use MyFantasyPlaceBundle\Entity\DartsPlayer;
-use MyFantasyPlaceBundle\Entity\SnookerPlayer;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\AddPlayerType;
-use MyFantasyPlaceBundle\Form\RemoveDartsPlayerType;
-use MyFantasyPlaceBundle\Form\SelectDartsPlayerType;
-use MyFantasyPlaceBundle\Form\UpdateDartsPlayerType;
 use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
+use MyFantasyPlaceBundle\Service\UserPlayer\UserPlayerServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PlayersController extends Controller
@@ -27,12 +23,20 @@ class PlayersController extends Controller
     private $playersService;
 
     /**
+     * @var UserPlayerServiceInterface
+     */
+    private $userPlayerService;
+
+    /**
      * PlayersController constructor.
      * @param PlayersServiceInterface $dartsService
+     * @param UserPlayerServiceInterface $userPlayerService
      */
-    public function __construct(PlayersServiceInterface $dartsService)
+    public function __construct(PlayersServiceInterface $dartsService,
+                                UserPlayerServiceInterface $userPlayerService)
     {
         $this->playersService = $dartsService;
+        $this->userPlayerService = $userPlayerService;
     }
 
 
@@ -179,4 +183,26 @@ class PlayersController extends Controller
             'form2' => $form2->createView()
         ]);
     }
+
+    /**
+     * @Route("/view_players/{type}", name="view_players")
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param string $type
+     * @return Response
+     */
+    public function buyPlayersAction(string $type)
+    {
+        $user = $this->getUser();
+
+        $allPlayers = $this->playersService->getAllPlayers($type);
+        $typeOfPlayers = 'get'.ucfirst($type).'Players';
+        return $this->render('player/view_players.html.twig', [
+            'type' => $type,
+            'players' => $allPlayers,
+            'user' => $user,
+            'userPlayers' => $this->userPlayerService->findUsersPlayers($user->$typeOfPlayers()->toArray())
+        ]);
+    }
+
 }

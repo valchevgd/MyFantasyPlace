@@ -2,6 +2,7 @@
 
 namespace MyFantasyPlaceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -125,6 +126,36 @@ class DartsPlayer
      * @ORM\Column(name="season_average_three_darts", type="float")
      */
     private $seasonAverageThreeDarts = 0;
+
+    /**
+     * @var ArrayCollection|User
+     *
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="playerId")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|User
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param ArrayCollection|User $users
+     */
+    public function addUsers($users)
+    {
+        $this->users[] = $users;
+    }
+
+
 
     /**
      * @return int

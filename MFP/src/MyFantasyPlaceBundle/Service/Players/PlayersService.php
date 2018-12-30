@@ -141,4 +141,20 @@ class PlayersService implements PlayersServiceInterface
 
         return $rank;
     }
+
+    public function getAllPlayers(string $type)
+    {
+        $repository = $type . 'PlayerRepository';
+        $allPlayers = $this->$repository->findAll();
+
+        return $allPlayers;
+    }
+
+    public function getPlayer(string $type, int $id)
+    {
+        $repository = $type . 'PlayerRepository';
+        $player = $this->$repository->find($id);
+
+        return $player;
+    }
 }

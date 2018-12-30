@@ -18,4 +18,8 @@ interface PlayersServiceInterface
     public function updateSnookerPlayer(SnookerPlayerToUpdateDTO $formData);
 
     public function getRank(string $type);
+
+    public function getAllPlayers(string $type);
+
+    public function getPlayer(string $type, int $id);
 }

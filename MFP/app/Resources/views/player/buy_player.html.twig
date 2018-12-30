@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}<div class="container body-content col-sm-8"
+                     style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white; text-align: center">
+
+    <h3 style="text-align: center">Buy Player</h3>
+    <table class="table">
+        <tr>
+            <th style="text-align: center">Name</th>
+            <td style="text-align: center">{{ player.name }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: center">Value</th>
+            <td style="text-align: center">{{ player.value }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: center">Season Fantasy Points</th>
+            <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
+        </tr>
+    </table>
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {{ form(form) }}
+    </div>
+{% endblock %}
+

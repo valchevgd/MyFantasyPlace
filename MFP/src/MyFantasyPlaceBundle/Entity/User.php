@@ -2,6 +2,7 @@
 
 namespace MyFantasyPlaceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -121,6 +122,59 @@ class User implements UserInterface
      */
     private $isAdmin = false;
 
+    /**
+     * @var ArrayCollection|DartsPlayer[]
+     *
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="userId")
+     */
+    private $dartsPlayers;
+
+    /**
+     * @var ArrayCollection|SnookerPlayer[]
+     *
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="userId")
+     */
+    private $snookerPlayers;
+
+    public function __construct()
+    {
+        $this->dartsPlayers = new ArrayCollection();
+        $this->snookerPlayers = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|SnookerPlayer[]
+     */
+    public function getSnookerPlayers()
+    {
+        return $this->snookerPlayers;
+    }
+
+    /**
+     * @param ArrayCollection|SnookerPlayer[] $snookerPlayers
+     */
+    public function addSnookerPlayers($snookerPlayers)
+    {
+        $this->snookerPlayers[] = $snookerPlayers;
+    }
+
+
+
+    /**
+     * @return ArrayCollection|DartsPlayer[]
+     */
+    public function getDartsPlayers()
+    {
+        return $this->dartsPlayers;
+    }
+
+    /**
+     * @param ArrayCollection|DartsPlayer[] $dartsPlayers
+     */
+    public function addDartsPlayers($dartsPlayers)
+    {
+        $this->dartsPlayers[] = $dartsPlayers;
+    }
 
     /**
      * Get id
