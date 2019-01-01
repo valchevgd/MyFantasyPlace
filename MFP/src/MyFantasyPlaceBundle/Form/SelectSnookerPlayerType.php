@@ -3,6 +3,7 @@
 namespace MyFantasyPlaceBundle\Form;
 
 use MyFantasyPlaceBundle\Entity\SnookerPlayer;
+use MyFantasyPlaceBundle\Repository\SnookerPlayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -17,6 +18,10 @@ class SelectSnookerPlayerType extends AbstractType
     {
         $builder->add('snookerPlayer', EntityType::class, [
             'class' => SnookerPlayer::class,
+            'query_builder' => function (SnookerPlayerRepository $er) {
+                return $er->createQueryBuilder('p')
+                    ->where("p.status = 'running'");
+            },
             'choice_label' => 'name',
             'label' => 'Select Player To Update',
             'placeholder' => ''

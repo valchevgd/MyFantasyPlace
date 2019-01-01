@@ -191,16 +191,16 @@ class PlayersController extends Controller
      * @param string $type
      * @return Response
      */
-    public function buyPlayersAction(string $type)
+    public function viewPlayersAction(string $type)
     {
         $user = $this->getUser();
 
         $allPlayers = $this->playersService->getAllPlayers($type);
         $typeOfPlayers = 'get'.ucfirst($type).'Players';
+
         return $this->render('player/view_players.html.twig', [
             'type' => $type,
             'players' => $allPlayers,
-            'user' => $user,
             'userPlayers' => $this->userPlayerService->findUsersPlayers($user->$typeOfPlayers()->toArray())
         ]);
     }

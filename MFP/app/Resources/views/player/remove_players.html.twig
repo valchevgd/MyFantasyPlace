@@ -8,24 +8,25 @@
                 {{ msg }}
             </div>
         {% endfor %}
-
         <h3 style="text-align: center">Select Player</h3>
         <table class="table">
             <tr>
                 <th style="text-align: center">Player Name</th>
                 <th style="text-align: center">Player Value</th>
+                <th style="text-align: center">Player Season Fantasy Points</th>
+                <th style="text-align: center">Player Level</th>
                 <th style="text-align: center">Options</th>
             </tr>
             {% for player in players %}
-                {% if player.name not in userPlayers|keys%}
-                        <tr>
-                            <td style="text-align: center">{{ player.name }}</td>
-                            <td style="text-align: center">{{ player.value }}</td>
-                            <td style="text-align: center"><a
-                                        href="{{ path('buy_player', {'type':type, 'playerId':player.id}) }}"
-                                        class="btn btn-outline-light" role="button" aria-disabled="false">View</a></td>
-                        </tr>
-                {% endif %}
+                <tr>
+                    <td style="text-align: center">{{ player.name }}</td>
+                    <td style="text-align: center">{{ player.value }}</td>
+                    <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
+                    <td style="text-align: center">{{ player.level }}</td>
+                    <td style="text-align: center"><a
+                                href="{{ path('remove_player', {'type':type, 'playerId':player.id}) }}"
+                                class="btn btn-danger" role="button" aria-disabled="false">Remove</a></td>
+                </tr>
             {% endfor %}
         </table>
     </div>

@@ -3,6 +3,7 @@
 namespace MyFantasyPlaceBundle\Form;
 
 use MyFantasyPlaceBundle\Entity\DartsPlayer;
+use MyFantasyPlaceBundle\Repository\DartsPlayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,6 +16,10 @@ class SelectDartsPlayerType extends AbstractType
     {
         $builder->add('dartsPlayer', EntityType::class, [
             'class' => DartsPlayer::class,
+            'query_builder' => function (DartsPlayerRepository $er) {
+                return $er->createQueryBuilder('p')
+                    ->where("p.status = 'running'");
+            },
             'choice_label' => 'name',
             'label' => 'Select Player To Update',
             'placeholder' => ''

@@ -26,4 +26,50 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function findPlayersToView($id)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('sp.id', 'sp.name', 'sp.value', 'sp.seasonFantasyPoints', 'usp.level', 'usp.progress', 'usp.value - usp.progress as nextLevelValue')
+            ->from('MyFantasyPlaceBundle:UserSnookerPlayer','usp')
+            ->innerJoin('usp.playerId', 'sp')
+            ->where('usp.userId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function update(UserSnookerPlayer $relation){
+
+        $this->_em->persist($relation);
+        $this->_em->flush();
+
+        return true;
+    }
+
+    public function findPlayerToView($userId, $playerId)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('sp.id', 'sp.name', 'sp.value', 'sp.seasonFantasyPoints', 'usp.level', 'usp.progress', 'usp.value - usp.progress as nextLevelValue')
+            ->from('MyFantasyPlaceBundle:UserSnookerPlayer','usp')
+            ->innerJoin('usp.playerId', 'sp')
+            ->where('usp.userId = :userId and usp.playerId = :playerId')
+            ->setParameter('userId', $userId)
+            ->setParameter('playerId', $playerId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function delete($relation)
+    {
+        $this->_em->remove($relation);
+        $this->_em->flush();
+
+        return true;
+    }
 }

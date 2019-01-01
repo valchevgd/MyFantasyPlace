@@ -26,4 +26,50 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function findPlayersToView($id)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('dp.id', 'dp.name', 'dp.value', 'dp.seasonFantasyPoints', 'udp.level', 'udp.progress', 'udp.value - udp.progress as nextLevelValue')
+            ->from('MyFantasyPlaceBundle:UserDartsPlayer','udp')
+            ->innerJoin('udp.playerId', 'dp')
+            ->where('udp.userId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function update(UserDartsPlayer $relation){
+
+        $this->_em->persist($relation);
+        $this->_em->flush();
+
+        return true;
+    }
+
+    public function findPlayerToView($userId, $playerId)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('dp.id', 'dp.name', 'dp.value', 'dp.seasonFantasyPoints', 'udp.level', 'udp.progress', 'udp.value - udp.progress as nextLevelValue')
+            ->from('MyFantasyPlaceBundle:UserDartsPlayer','udp')
+            ->innerJoin('udp.playerId', 'dp')
+            ->where('udp.userId = :userId and udp.playerId = :playerId')
+            ->setParameter('userId', $userId)
+            ->setParameter('playerId', $playerId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function delete($relation)
+    {
+        $this->_em->remove($relation);
+        $this->_em->flush();
+
+        return true;
+    }
 }
