@@ -9,8 +9,12 @@
 namespace MyFantasyPlaceBundle\Service\User;
 
 
+use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Repository\UserRepository;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
@@ -23,21 +27,29 @@ class UserService implements UserServiceInterface
 
     private $passwordEncoder;
 
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
 
     /**
      * UserService constructor.
      * @param UserRepository $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param ContainerInterface|null $container
      */
     public function __construct(UserRepository $userRepository,
-                                UserPasswordEncoderInterface $passwordEncoder)
+                                UserPasswordEncoderInterface $passwordEncoder,
+                                ContainerInterface $container = null)
     {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->container = $container;
     }
 
 
-    public function register(\MyFantasyPlaceBundle\Entity\User $user)
+    public function register(User $user)
     {
         $userByUsername = $this->userRepository->findBy(['username' => $user->getUsername()]);
 
@@ -71,5 +83,34 @@ class UserService implements UserServiceInterface
         $rank = $this->userRepository->findBy([],['dartsTotalPoints' => 'desc'], 5);
 
         return $rank;
+    }
+
+    public function getViewUser(int $id)
+    {
+        return $this->userRepository->find($id);
+    }
+
+    public function update(User $user)
+    {
+        return $this->userRepository->updateUser($user);
+    }
+
+    public function prepareUser(User $currentUser, string $username, string $email, UploadedFile $file = null)
+    {
+        if ($file){
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            try {
+                $file->move($this->container->getParameter('user_directory'),
+                    $fileName);
+            } catch (FileException $ex) {
+
+            }
+            $currentUser->setImage($fileName);
+        }
+
+        $currentUser->setUsername($username);
+        $currentUser->setEmail($email);
+
+        return $currentUser;
     }
 }

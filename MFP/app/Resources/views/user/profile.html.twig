@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="form-group col-md-12"
+             style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+            <h2>{{ viewUser.username }}'s Profile</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                        <img src="{{ asset('uploads/images/' ~ viewUser.image) }}" width="300" height="200">
+                    </div>
+                </div>
+                {% if viewUser.id is same as(app.user.id) %}
+                    <div class="col-md-5">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="user_email">Email:</label>
+                                <input type="text" class="form-control" id="user_email" value="{{ app.user.email }}"
+                                       name="user[email]">
+                            </div>
+                            <div class="form-group">
+                                <label for="user_username">Username:</label>
+                                <input type="text" class="form-control" id="user_username"
+                                       value="{{ app.user.username }}"
+                                       name="user[username]">
+                            </div>
+                            <div class="form-group">
+                                <label for="user_image">Upload Image</label>
+                                <input type="file" accept=".jpg, .png" class="form-control" id="user_image"
+                                       name="user[image]">
+                            </div>
+                            {{ form_row(form._token) }}
+                            <button type="submit" class="btn btn-secondary">Update Profile</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">{{ viewUser.username }}'s Snooker Players</h3>
+                    <table class="table">
+                        <tr>
+                            <th style="text-align: center">Player Name</th>
+                            <th style="text-align: center">Player Value</th>
+                            <th style="text-align: center">Player Season Fantasy Points</th>
+
+                        </tr>
+                        {% for player in snookerPlayers %}
+                            <tr>
+                                <td style="text-align: center">{{ player.name }}</td>
+                                <td style="text-align: center">{{ player.value }}</td>
+                                <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% if viewUser.id is same as(app.user.id) %}
+                        <a href="{{ path('remove_players', {'type':'snooker'}) }}"
+                           class="btn btn-danger" role="button" aria-disabled="false">Remove</a>
+                        <a href="{{ path('view_players', {'type':'snooker'}) }}"
+                           class="btn btn-success" role="button" aria-disabled="false">Add</a>
+                        <a href="{{ path('upgrade_players', {'type':'snooker'}) }}"
+                           class="btn btn-secondary" role="button" aria-disabled="false">Upgrade</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">{{ viewUser.username }}'s Darts Players</h3>
+                    <table class="table">
+                        <tr>
+                            <th style="text-align: center">Player Name</th>
+                            <th style="text-align: center">Player Value</th>
+                            <th style="text-align: center">Player Season Fantasy Points</th>
+
+                        </tr>
+                        {% for player in dartsPlayers %}
+                            <tr>
+                                <td style="text-align: center">{{ player.name }}</td>
+                                <td style="text-align: center">{{ player.value }}</td>
+                                <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% if viewUser.id is same as(app.user.id) %}
+                        <a href="{{ path('remove_players', {'type':'darts'}) }}"
+                           class="btn btn-danger" role="button" aria-disabled="false">Remove</a>
+                        <a href="{{ path('view_players', {'type':'darts'}) }}"
+                           class="btn btn-success" role="button" aria-disabled="false">Add</a>
+                        <a href="{{ path('upgrade_players', {'type':'darts'}) }}"
+                           class="btn btn-secondary" role="button" aria-disabled="false">Upgrade</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

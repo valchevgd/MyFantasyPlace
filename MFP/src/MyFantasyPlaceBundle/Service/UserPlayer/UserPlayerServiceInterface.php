@@ -18,4 +18,5 @@ interface UserPlayerServiceInterface
         public function upgradePlayer(User $user, int $playerId, string $type,float $tokens = null);
 
         public function remove(User $user,string $type,int $playerId, float $playerValue);
+
 }

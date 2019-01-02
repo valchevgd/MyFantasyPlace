@@ -136,11 +136,34 @@ class User implements UserInterface
      */
     private $snookerPlayers;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", nullable=true)
+     */
+    private $image = null;
+
     public function __construct()
     {
         $this->dartsPlayers = new ArrayCollection();
         $this->snookerPlayers = new ArrayCollection();
     }
+
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(string $image)
+    {
+        $this->image = $image;
+    }
+
+
 
     /**
      * @return ArrayCollection|SnookerPlayer[]

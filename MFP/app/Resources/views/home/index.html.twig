@@ -9,12 +9,16 @@
                         <h3 style="text-align: center; color: white">Snooker Users rank</h3>
                         <table>
                             <tr>
-                                <th>Name</th>
+                                <th>Username</th>
                                 <th>Points</th>
                             </tr>
                             {% for user in usersSnookerRank %}
                                 <tr>
-                                    <td>{{ user.fullName }}</td>
+
+                                    <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30"
+                                             height="20"></td>
+                                    <td><a href="{{ path('profile', {'id':user.id}) }}"
+                                           style="color: white">{{ user.username }}</a></td>
                                     <td>{{ user.snookerTotalPoints }}</td>
                                 </tr>
                             {% endfor %}
@@ -26,12 +30,14 @@
                         <h3 style="text-align: center; color: white">Darts Users rank</h3>
                         <table>
                             <tr>
-                                <th>Name</th>
+                                <th colspan="2">Username</th>
                                 <th>Points</th>
                             </tr>
                             {% for user in usersDartsRank %}
                                 <tr>
-                                    <td>{{ user.fullName }}</td>
+                                    <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
+                                    </td>
+                                    <td><a href="{{ path('profile', {'id':user.id}) }}" style="color: white">{{ user.username }}</a></td>
                                     <td>{{ user.dartsTotalPoints }}</td>
                                 </tr>
                             {% endfor %}

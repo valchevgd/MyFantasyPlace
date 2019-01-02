@@ -27,7 +27,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
     public function updateUser(User $user)
     {
-        $this->_em->persist($user);
+        $this->_em->merge($user);
         $this->_em->flush();
+
+        return true;
     }
 }

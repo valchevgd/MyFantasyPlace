@@ -157,4 +157,5 @@ class UserPlayerService implements UserPlayerServiceInterface
 
         return false;
     }
+
 }
