@@ -64,26 +64,6 @@ class DartsPlayer
      */
     private $tournamentMaximums = 0;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="tournament_checkout_percentage", type="float")
-     */
-    private $tournamentCheckoutPercentage = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="tournament_average_three_darts", type="float")
-     */
-    private $tournamentAverageThreeDarts = 0;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tournament_games_played", type="integer")
-     */
-    private $tournamentGamesPlayed = 0;
 
     /**
      * @var float
@@ -116,16 +96,17 @@ class DartsPlayer
     /**
      * @var float
      *
-     * @ORM\Column(name="season_checkout_percentage", type="float")
+     * @ORM\Column(name="season_fantasy_points", type="float")
      */
-    private $seasonCheckoutPercentage = 0;
+    private $seasonFantasyPoints = 0;
 
     /**
-     * @var float
+     * @var boolean
      *
-     * @ORM\Column(name="season_average_three_darts", type="float")
+     * @ORM\Column(name="new_status", type="boolean")
      */
-    private $seasonAverageThreeDarts = 0;
+    private $newStatus = false;
+
 
     /**
      * @var ArrayCollection|User
@@ -154,60 +135,6 @@ class DartsPlayer
     {
         $this->users[] = $users;
     }
-
-
-
-    /**
-     * @return int
-     */
-    public function getTournamentGamesPlayed()
-    {
-        return $this->tournamentGamesPlayed;
-    }
-
-    /**
-     * @param int $tournamentGamesPlayed
-     * @return DartsPlayer
-     */
-    public function setTournamentGamesPlayed(int $tournamentGamesPlayed)
-    {
-        $this->tournamentGamesPlayed = $tournamentGamesPlayed;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSeasonGamesPlayed()
-    {
-        return $this->seasonGamesPlayed;
-    }
-
-    /**
-     * @param int $seasonGamesPlayed
-     * @return DartsPlayer
-     */
-    public function setSeasonGamesPlayed(int $seasonGamesPlayed)
-    {
-        $this->seasonGamesPlayed = $seasonGamesPlayed;
-
-        return $this;
-    }
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="season_games_played", type="integer")
-     */
-    private $seasonGamesPlayed = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="season_fantasy_points", type="float")
-     */
-    private $seasonFantasyPoints = 0;
 
 
     /**
@@ -364,53 +291,6 @@ class DartsPlayer
         return $this->tournamentMaximums;
     }
 
-    /**
-     * Set tournamentCheckoutPercentage
-     *
-     * @param float $tournamentCheckoutPercentage
-     *
-     * @return DartsPlayer
-     */
-    public function setTournamentCheckoutPercentage($tournamentCheckoutPercentage)
-    {
-        $this->tournamentCheckoutPercentage = $tournamentCheckoutPercentage;
-
-        return $this;
-    }
-
-    /**
-     * Get tournamentCheckoutPercentage
-     *
-     * @return float
-     */
-    public function getTournamentCheckoutPercentage()
-    {
-        return $this->tournamentCheckoutPercentage;
-    }
-
-    /**
-     * Set tournamentAverageThreeDarts
-     *
-     * @param float $tournamentAverageThreeDarts
-     *
-     * @return DartsPlayer
-     */
-    public function setTournamentAverageThreeDarts($tournamentAverageThreeDarts)
-    {
-        $this->tournamentAverageThreeDarts = $tournamentAverageThreeDarts;
-
-        return $this;
-    }
-
-    /**
-     * Get tournamentAverageThreeDarts
-     *
-     * @return float
-     */
-    public function getTournamentAverageThreeDarts()
-    {
-        return $this->tournamentAverageThreeDarts;
-    }
 
     /**
      * Set tournamentFantasyPoints
@@ -508,53 +388,7 @@ class DartsPlayer
         return $this->seasonMaximums;
     }
 
-    /**
-     * Set seasonCheckoutPercentage
-     *
-     * @param float $seasonCheckoutPercentage
-     *
-     * @return DartsPlayer
-     */
-    public function setSeasonCheckoutPercentage($seasonCheckoutPercentage)
-    {
-        $this->seasonCheckoutPercentage = $seasonCheckoutPercentage;
 
-        return $this;
-    }
-
-    /**
-     * Get seasonCheckoutPercentage
-     *
-     * @return float
-     */
-    public function getSeasonCheckoutPercentage()
-    {
-        return $this->seasonCheckoutPercentage;
-    }
-
-    /**
-     * Set seasonAverageThreeDarts
-     *
-     * @param float $seasonAverageThreeDarts
-     *
-     * @return DartsPlayer
-     */
-    public function setSeasonAverageThreeDarts($seasonAverageThreeDarts)
-    {
-        $this->seasonAverageThreeDarts = $seasonAverageThreeDarts;
-
-        return $this;
-    }
-
-    /**
-     * Get seasonAverageThreeDarts
-     *
-     * @return float
-     */
-    public function getSeasonAverageThreeDarts()
-    {
-        return $this->seasonAverageThreeDarts;
-    }
 
     /**
      * Set seasonFantasyPoints
@@ -579,5 +413,23 @@ class DartsPlayer
     {
         return $this->seasonFantasyPoints;
     }
+
+    /**
+     * @return bool
+     */
+    public function getNewStatus()
+    {
+        return $this->newStatus;
+    }
+
+    /**
+     * @param bool $newStatus
+     */
+    public function setNewStatus(bool $newStatus): void
+    {
+        $this->newStatus = $newStatus;
+    }
+
+
 }
 

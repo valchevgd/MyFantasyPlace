@@ -35,13 +35,23 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
 
     public function update(SnookerPlayer $snookerPlayer)
     {
-        $this->_em->persist($snookerPlayer);
+        $this->_em->merge($snookerPlayer);
         $this->_em->flush();
+
+        return true;
     }
 
-    public function updateStatus(SnookerPlayer $player)
+    public function restartPlayersForTournament()
     {
-        $this->_em->persist($player);
-        $this->_em->flush();
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:SnookerPlayer', 'sp')
+            ->set('sp.tournamentOverSeventy', 0)
+            ->set('sp.tournamentCenturies', 0)
+            ->set('sp.tournamentFantasyPoints', 0)
+            ->set('sp.status', null)
+            ->set('sp.newStatus', false)
+            ->getQuery();
     }
+
 }

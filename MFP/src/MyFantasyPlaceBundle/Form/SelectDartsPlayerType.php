@@ -14,7 +14,7 @@ class SelectDartsPlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dartsPlayer', EntityType::class, [
+        $builder->add('player', EntityType::class, [
             'class' => DartsPlayer::class,
             'query_builder' => function (DartsPlayerRepository $er) {
                 return $er->createQueryBuilder('p')

@@ -7,6 +7,8 @@ use MyFantasyPlaceBundle\Entity\Tournament;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\AddTournamentType;
 use MyFantasyPlaceBundle\Form\FinishTournamentType;
+use MyFantasyPlaceBundle\Form\UpdateValueType;
+use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
 use MyFantasyPlaceBundle\Service\Tournament\TournamentServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,6 +22,7 @@ class TournamentsController extends Controller
     /** @var TournamentServiceInterface */
     private $tournamentService;
 
+
     /**
      * TournamentsController constructor.
      * @param TournamentServiceInterface $tournamentService
@@ -27,6 +30,7 @@ class TournamentsController extends Controller
     public function __construct(TournamentServiceInterface $tournamentService)
     {
         $this->tournamentService = $tournamentService;
+
     }
 
 
@@ -137,10 +141,11 @@ class TournamentsController extends Controller
         /** @var Tournament $currentTournament */
         $currentTournament = $this->tournamentService->getCurrentTournament($type);
 
+
         $form = $this->createForm(FinishTournamentType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted() and $form->isValid()){
             try{
                 if($this->tournamentService->finishTournament($currentTournament, $type)){
                     $this->addFlash('message', $currentTournament->getName().' tournament is successfully finished! Now you can start next tournament.');
@@ -150,7 +155,7 @@ class TournamentsController extends Controller
                 }
             }catch (Exception $exception){
                 $this->addFlash('message', $exception->getMessage());
-                return $this->redirectToRoute('update_player', [
+                return $this->redirectToRoute('update_players_results', [
                     'type' => $type
                 ]);
             }
@@ -158,7 +163,7 @@ class TournamentsController extends Controller
 
         return $this->render('admin/finish_tournament.html.twig', [
             'tournament' => $currentTournament,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }

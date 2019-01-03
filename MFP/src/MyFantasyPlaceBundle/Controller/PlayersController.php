@@ -6,6 +6,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use MyFantasyPlaceBundle\DTO\PlayersDTO;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\AddPlayerType;
+use MyFantasyPlaceBundle\Form\UpdateValueType;
 use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
 use MyFantasyPlaceBundle\Service\UserPlayer\UserPlayerServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -86,7 +87,7 @@ class PlayersController extends Controller
     }
 
     /**
-     * @Route("/remove_players{type}", name="remove_players")
+     * @Route("/admin_remove_players{type}", name="admin_remove_players")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
@@ -130,14 +131,14 @@ class PlayersController extends Controller
     }
 
     /**
-     * @Route("/update_player/{type}", name="update_player")
+     * @Route("/update_player/{type}", name="update_players_results")
      *
      * @param Request $request
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function updateValuesAction(Request $request, string $type)
+    public function updateResultsAction(Request $request, string $type)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -154,10 +155,9 @@ class PlayersController extends Controller
 
 
         if ($form->isSubmitted()) {
-            $player = $form->getData()[$type.'Player'];
+            $player = $form->getData()['player'];
 
             $dataFromForm->setStatus($player->getStatus());
-            $dataFromForm->setValue($player->getValue());
             $dataFromForm->setId($player->getId());
         }
 
@@ -173,14 +173,14 @@ class PlayersController extends Controller
 
             $this->playersService->$typeToUpdate($dataFromForm);
             $this->addFlash('message', 'The player is successfully update!');
-           return $this->redirectToRoute('update_player', [
+           return $this->redirectToRoute('update_players_results', [
                'type' => $type
            ]);
         }
         return $this->render('admin/update_player.html.twig', [
             'form' => $form->createView(),
             'player' => $dataFromForm,
-            'form2' => $form2->createView()
+            'form2' => $form2->createView(),
         ]);
     }
 
@@ -202,6 +202,59 @@ class PlayersController extends Controller
             'type' => $type,
             'players' => $allPlayers,
             'userPlayers' => $this->userPlayerService->findUsersPlayers($user->$typeOfPlayers()->toArray())
+        ]);
+    }
+
+    /**
+     * @Route("admin_update_players_value/{type}", name="update_players_value")
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param string $type
+     * @return Response
+     */
+    public function updateValueAction(Request $request, string $type)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user->getIsAdmin()) {
+            return $this->redirectToRoute('index');
+        }
+
+        try{
+            $player = $this->playersService->getPlayerToUpdate($type);
+        }catch (\Exception $exception){
+            $this->addFlash('message', $exception->getMessage());
+            return $this->redirectToRoute('update_players_results', [
+                'type' => $type
+            ]);
+        }
+
+        $form = $this->createForm(UpdateValueType::class, $player);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()){
+
+            try {
+                if ($this->playersService->updateValue($player, $type)) {
+                    $this->addFlash('message', 'The player`s value is successfully update!');
+                    return $this->redirectToRoute('update_players_value', [
+                        'type' => $type
+                    ]);
+                }
+            }catch (\Exception $exception){
+                $this->addFlash('message', $exception->getMessage());
+                return $this->redirectToRoute('update_players_results', [
+                    'type' => $type
+                ]);
+            }
+        }
+
+        return $this->render('admin/update_value.html.twig', [
+            'player' => $player,
+            'form' => $form->createView(),
+            'type' => $type
         ]);
     }
 

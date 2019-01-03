@@ -3,12 +3,18 @@
 namespace MyFantasyPlaceBundle\Service\Players;
 
 
+use Exception;
 use MyFantasyPlaceBundle\DTO\DartsPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\DTO\SnookerPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\Entity\DartsPlayer;
 use MyFantasyPlaceBundle\Entity\SnookerPlayer;
+use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Repository\DartsPlayerRepository;
 use MyFantasyPlaceBundle\Repository\SnookerPlayerRepository;
+use MyFantasyPlaceBundle\Repository\UserDartsPlayerRepository;
+use MyFantasyPlaceBundle\Repository\UserRepository;
+use MyFantasyPlaceBundle\Repository\UserSnookerPlayerRepository;
+use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 
 class PlayersService implements PlayersServiceInterface
 {
@@ -23,15 +29,40 @@ class PlayersService implements PlayersServiceInterface
     private $snookerPlayerRepository;
 
     /**
+     * @var UserDartsPlayerRepository
+     */
+    private $userDartsPlayerRepository;
+
+    /**
+     * @var UserSnookerPlayerRepository
+     */
+    private $userSnookerPlayerRepository;
+
+    /**
+     * @var UserServiceInterface
+     */
+    private $userRepository;
+
+
+    /**
      * PlayersService constructor.
      * @param DartsPlayerRepository $dartsPlayerRepository
      * @param SnookerPlayerRepository $snookerPlayerRepository
+     * @param UserDartsPlayerRepository $userDartsPlayerRepository
+     * @param UserSnookerPlayerRepository $userSnookerPlayerRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(DartsPlayerRepository $dartsPlayerRepository,
-                                SnookerPlayerRepository $snookerPlayerRepository)
+                                SnookerPlayerRepository $snookerPlayerRepository,
+                                UserDartsPlayerRepository $userDartsPlayerRepository,
+                                UserSnookerPlayerRepository $userSnookerPlayerRepository,
+                                UserRepository $userRepository)
     {
         $this->dartsPlayerRepository = $dartsPlayerRepository;
         $this->snookerPlayerRepository = $snookerPlayerRepository;
+        $this->userDartsPlayerRepository = $userDartsPlayerRepository;
+        $this->userSnookerPlayerRepository = $userSnookerPlayerRepository;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -64,27 +95,33 @@ class PlayersService implements PlayersServiceInterface
         /** @var DartsPlayer $dartsPlayer */
         $dartsPlayer = $this->dartsPlayerRepository->find($formData->getId());
 
+        $users = $this->userDartsPlayerRepository->findUsers($dartsPlayer->getId());
+
+        foreach ($users as $user){
+            /** @var User $userToUpdate */
+            $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
+            $userToUpdate->setDartsTournamentPoints($userToUpdate->getDartsTournamentPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setDartsTotalPoints($userToUpdate->getDartsTotalPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setFantasyTokens($userToUpdate->getFantasyTokens() + ($fantasyPoints * $user['level']));
+
+            $this->userRepository->updateUser($userToUpdate);
+
+        }
+
         $dartsPlayer->setTournamentFantasyPoints($dartsPlayer->getTournamentFantasyPoints() + $fantasyPoints);
         $dartsPlayer->setSeasonFantasyPoints($dartsPlayer->getSeasonFantasyPoints() + $fantasyPoints);
 
         $dartsPlayer->setTournamentOverHundred($dartsPlayer->getTournamentOverHundred() + $formData->getOverHundred());
         $dartsPlayer->setTournamentOverOneHundredAndForty($dartsPlayer->getTournamentOverOneHundredAndForty() + $formData->getOverOneHundredAndForty());
         $dartsPlayer->setTournamentMaximums($dartsPlayer->getTournamentMaximums() + $formData->getMaximums());
-        $dartsPlayer->setTournamentCheckoutPercentage($dartsPlayer->getTournamentCheckoutPercentage() + $formData->getCheckoutPercentage());
-        $dartsPlayer->setTournamentAverageThreeDarts($dartsPlayer->getTournamentAverageThreeDarts() + $formData->getAverageThreeDarts());
-        $dartsPlayer->setTournamentGamesPlayed($dartsPlayer->getTournamentGamesPlayed() + 1);
 
         $dartsPlayer->setSeasonOverHundred($dartsPlayer->getSeasonOverHundred() + $formData->getOverHundred());
         $dartsPlayer->setSeasonOverOneHundredAndForty($dartsPlayer->getSeasonOverOneHundredAndForty() + $formData->getOverOneHundredAndForty());
         $dartsPlayer->setSeasonMaximums($dartsPlayer->getSeasonMaximums() + $formData->getMaximums());
-        $dartsPlayer->setSeasonCheckoutPercentage($dartsPlayer->getSeasonCheckoutPercentage() + $formData->getCheckoutPercentage());
-        $dartsPlayer->setSeasonAverageThreeDarts($dartsPlayer->getSeasonAverageThreeDarts() + $formData->getAverageThreeDarts());
-        $dartsPlayer->setSeasonGamesPlayed($dartsPlayer->getSeasonGamesPlayed() + 1);
 
-        $dartsPlayer->setValue($formData->getValue());
         $dartsPlayer->setStatus($formData->getStatus());
 
-        $this->dartsPlayerRepository->update($dartsPlayer);
+        return $this->dartsPlayerRepository->update($dartsPlayer);
     }
 
     public function updateSnookerPlayer(SnookerPlayerToUpdateDTO $formData)
@@ -110,6 +147,19 @@ class PlayersService implements PlayersServiceInterface
 
         $fantasyPoints += $pointsFromCenturies / 10;
 
+        $users = $this->userSnookerPlayerRepository->findUsers($snookerPlayer->getId());
+
+        foreach ($users as $user){
+            /** @var User $userToUpdate */
+            $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
+            $userToUpdate->setSnookerTournamentPoints($userToUpdate->getSnookerTournamentPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setSnookerTotalPoints($userToUpdate->getSnookerTotalPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setFantasyTokens($userToUpdate->getFantasyTokens() + ($fantasyPoints * $user['level']));
+
+            $this->userRepository->updateUser($userToUpdate);
+
+        }
+
         $overSeventy = $formData->getOverSeventy() + $formData->getOverEighty() + $formData->getOverNinety();
 
         $snookerPlayer->setTournamentOverSeventy($snookerPlayer->getTournamentOverSeventy() + $overSeventy);
@@ -130,7 +180,7 @@ class PlayersService implements PlayersServiceInterface
         $snookerPlayer->setValue($formData->getValue());
         $snookerPlayer->setStatus($formData->getStatus());
 
-        $this->snookerPlayerRepository->update($snookerPlayer);
+        return $this->snookerPlayerRepository->update($snookerPlayer);
     }
 
     public function getRank(string $type)
@@ -156,5 +206,31 @@ class PlayersService implements PlayersServiceInterface
         $player = $this->$repository->find($id);
 
         return $player;
+    }
+
+    public function getPlayerToUpdate($type)
+    {
+        $repository = $type . 'PlayerRepository';
+        $player = $this->$repository->findOneBy(['newStatus' => false]);
+
+        return $player;
+    }
+
+
+    public function updateValue($player, string $type)
+    {
+
+
+        $repository = $type . 'PlayerRepository';
+
+        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running']);
+
+        if ($playerWithStatus){
+            throw new Exception('There are still players with status "running"! Please update players first!');
+        }
+
+
+        $player->setNewStatus(true);
+        return $player = $this->$repository->update($player);
     }
 }

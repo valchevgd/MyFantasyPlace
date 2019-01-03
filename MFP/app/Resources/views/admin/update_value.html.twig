@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content col-sm-6"
+         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        {% for msg in app.session.flashBag.get('message') %}
+            <div class="alert alert-secondary ">
+                {{ msg }}
+            </div>
+        {% endfor %}
+        {% if player %}
+            <h3>{{ player.name }}</h3>
+            <form method="post">
+                <div class="form-group col-md-3">
+                    <label for="player_value">Value</label>
+                    <input type="number" step="0.01" class="form-control" id="player_value" value="{{ player.value }}"
+                           name="update_value[value]">
+                </div>
+                {{ form_row(form._token) }}
+                <button type="submit" class="btn btn-success" name="update_value[submit]">Update Value</button>
+            </form>
+            <br>
+        {% else %}
+            <div style="text-align: center">
+                <h2>All players value are updated!</h2>
+                <a href="{{ path('start_tournament', {'type':type}) }}"
+                   class="btn btn-outline-light" role="button" aria-disabled="false">Start New Tournament</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+

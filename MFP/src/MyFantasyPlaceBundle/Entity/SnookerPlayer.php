@@ -86,6 +86,13 @@ class SnookerPlayer
     private $seasonFantasyPoints = 0;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="new_status", type="boolean")
+     */
+    private $newStatus;
+
+    /**
      * @var ArrayCollection|User
      *
      * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="playerId")
@@ -338,5 +345,23 @@ class SnookerPlayer
     {
         return $this->seasonFantasyPoints;
     }
+
+    /**
+     * @return bool
+     */
+    public function getNewStatus()
+    {
+        return $this->newStatus;
+    }
+
+    /**
+     * @param bool $newStatus
+     */
+    public function setNewStatus(bool $newStatus)
+    {
+        $this->newStatus = $newStatus;
+    }
+
+
 }
 

@@ -58,7 +58,7 @@ class TournamentService implements TournamentServiceInterface
         /** @var Tournament $runningTournament */
         $runningTournament = $this->tournamentRepository->findOneBy(['status' => 'running', 'type' => $type]);
 
-        if ($runningTournament){
+        if ($runningTournament) {
             throw new Exception($runningTournament->getName());
         }
 
@@ -67,9 +67,9 @@ class TournamentService implements TournamentServiceInterface
 
         $repository = $type . 'PlayerRepository';
 
-        foreach ($players as $player){
+        foreach ($players as $player) {
             $player->setStatus('running');
-            $this->$repository->updateStatus($player);
+            $this->$repository->update($player);
         }
 
         return true;
@@ -85,25 +85,19 @@ class TournamentService implements TournamentServiceInterface
         $repository = $type . 'PlayerRepository';
 
         $playerWithStatus = $this->$repository->findOneBy(['status' => 'running']);
+        $playerWithoutNewValue = $this->$repository->findOneBy(['newStatus' => false]);
 
-        if ($playerWithStatus){
-            throw new Exception('There are still players with status "running"! Please update players first!');
+        if ($playerWithStatus or $playerWithoutNewValue) {
+            throw new Exception('\'There are still players with status "running" OR players with no updated value! Please update players first!');
         }
 
         $tournament->setStatus('finished');
 
         $this->tournamentRepository->update($tournament);
 
-        $players = $this->$repository->findAll();
 
-        $playerType = $type.'Type';
+        $this->$repository->restartPlayersForTournament();
 
-        foreach ($players as $player) {
-
-            $player->setStatus(null);
-            $player = $this->$playerType($player);
-            $this->$repository->updateStatus($player);
-        }
 
         return true;
     }
@@ -123,9 +117,6 @@ class TournamentService implements TournamentServiceInterface
         $player->setTournamentOverHundred(0);
         $player->setTournamentOverOneHundredAndForty(0);
         $player->setTournamentMaximums(0);
-        $player->setTournamentCheckoutPercentage(0);
-        $player->setTournamentAverageThreeDarts(0);
-        $player->setTournamentGamesPlayed(0);
 
         return $player;
     }

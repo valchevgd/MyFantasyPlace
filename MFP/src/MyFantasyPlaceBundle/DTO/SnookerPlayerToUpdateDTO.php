@@ -7,8 +7,6 @@ class SnookerPlayerToUpdateDTO
 {
     private $id;
 
-    /** @var float */
-    private $value;
 
     private $status = null;
 
@@ -34,10 +32,6 @@ class SnookerPlayerToUpdateDTO
     private $overHundred = 0;
 
 
-    public function getValue()
-    {
-        return $this->value;
-    }
 
     /**
      * @return mixed
@@ -55,13 +49,6 @@ class SnookerPlayerToUpdateDTO
         $this->id = $id;
     }
 
-    /**
-     * @param float $value
-     */
-    public function setValue(float $value): void
-    {
-        $this->value = $value;
-    }
 
 
     public function getStatus()

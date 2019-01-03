@@ -35,15 +35,26 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
 
     public function update(DartsPlayer $player)
     {
-        $this->_em->persist($player);
+        $this->_em->merge($player);
         $this->_em->flush();
+
+        return true;
     }
 
-    public function updateStatus(DartsPlayer $player)
+    public function restartPlayersForTournament()
     {
-        $this->_em->persist($player);
-        $this->_em->flush();
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:DartsPlayer', 'dp')
+            ->set('dp.tournamentOverOneHundred', 0)
+            ->set('dp.tournamentOverOneHundredAndForty', 0)
+            ->set('dp.tournamentMaximums', 0)
+            ->set('dp.tournamentFantasyPoints', 0)
+            ->set('dp.status', null)
+            ->set('dp.newStatus', false)
+            ->getQuery();
     }
+
 
 
 }

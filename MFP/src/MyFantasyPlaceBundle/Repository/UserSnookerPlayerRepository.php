@@ -72,4 +72,18 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function findUsers($id)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('u.id', 'usp.level')
+            ->from('MyFantasyPlaceBundle:SnookerPlayer','usp')
+            ->innerJoin('usp.userId', 'u')
+            ->where('usp.playerId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $qb->getQuery()->execute();
+    }
 }

@@ -22,4 +22,8 @@ interface PlayersServiceInterface
     public function getAllPlayers(string $type);
 
     public function getPlayer(string $type, int $id);
+
+    public function getPlayerToUpdate($type);
+
+    public function updateValue($player, string $type);
 }

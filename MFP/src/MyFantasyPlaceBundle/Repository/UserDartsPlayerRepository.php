@@ -72,4 +72,18 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function findUsers($id)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('u.id', 'udp.level')
+            ->from('MyFantasyPlaceBundle:UserDartsPlayer','udp')
+            ->innerJoin('udp.userId', 'u')
+            ->where('udp.playerId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $qb->getQuery()->execute();
+    }
 }

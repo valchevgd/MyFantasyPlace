@@ -14,7 +14,7 @@ class UpdateDartsPlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('value', NumberType::class)
+        $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'null' => null,

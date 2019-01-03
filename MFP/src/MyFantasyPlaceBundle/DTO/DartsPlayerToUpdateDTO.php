@@ -7,8 +7,6 @@ class DartsPlayerToUpdateDTO
 {
     private $id;
 
-    private $value;
-
     private $status = null;
 
     private $overHundred = 0;
@@ -37,21 +35,6 @@ class DartsPlayerToUpdateDTO
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value): void
-    {
-        $this->value = $value;
-    }
 
     /**
      * @return null

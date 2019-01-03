@@ -16,7 +16,7 @@ class SelectSnookerPlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('snookerPlayer', EntityType::class, [
+        $builder->add('player', EntityType::class, [
             'class' => SnookerPlayer::class,
             'query_builder' => function (SnookerPlayerRepository $er) {
                 return $er->createQueryBuilder('p')
