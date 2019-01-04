@@ -14,8 +14,16 @@
             {% form_theme form 'bootstrap_3_layout.html.twig' %}
             {{ form(form) }}
         {% else %}
-            <div class="alert alert-secondary ">
+            <div class="alert alert-secondary" style="text-align: center">
                 <h5>No upcoming tournaments!</h5>
+                <div style="margin: 5px">
+                    <a href="{{ path('add_tournament', {'type': type}) }}" class="btn btn-success" role="button">Add New
+                        Tournament</a>
+                </div>
+                <div style="margin: 5px">
+                    <a href="{{ path('admin_remove_players', {'type': type}) }}" class="btn btn-danger" role="button">Drop
+                        Players And Restart Players Data</a>
+                </div>
             </div>
         {% endif %}
     </div>

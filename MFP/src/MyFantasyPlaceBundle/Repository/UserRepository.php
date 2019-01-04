@@ -32,4 +32,26 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
+    public function restartUsersForTournament(string $typeOfPointsToReset)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:User', 'u')
+            ->set($typeOfPointsToReset, '0')
+            ->getQuery();
+
+        $qb->getQuery()->execute();
+    }
+
+    public function restartUsersForSeason($typeOfPointsToReset)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:User', 'u')
+            ->set($typeOfPointsToReset, '0')
+            ->getQuery();
+
+        $qb->getQuery()->execute();
+    }
 }

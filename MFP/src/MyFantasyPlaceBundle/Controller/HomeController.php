@@ -3,6 +3,7 @@
 namespace MyFantasyPlaceBundle\Controller;
 
 use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
+use MyFantasyPlaceBundle\Service\Tournament\TournamentServiceInterface;
 use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,14 +22,22 @@ class HomeController extends Controller
     private $playerService;
 
     /**
+     * @var TournamentServiceInterface
+     */
+    private $tournamentService;
+
+    /**
      * @param UserServiceInterface $userService
      * @param PlayersServiceInterface $playerService
+     * @param TournamentServiceInterface $tournamentService
      */
     public function __construct(UserServiceInterface $userService,
-                                PlayersServiceInterface $playerService)
+                                PlayersServiceInterface $playerService,
+                                TournamentServiceInterface $tournamentService)
     {
         $this->userService = $userService;
         $this->playerService = $playerService;
+        $this->tournamentService = $tournamentService;
     }
 
 
@@ -41,12 +50,16 @@ class HomeController extends Controller
         $usersDartsRank = $this->userService->getDartsRank();
         $playersSnookerRank = $this->playerService->getRank('snooker');
         $playersDartsRank = $this->playerService->getRank('darts');
+        $nextSnookerTournament = $this->tournamentService->getNext('snooker');
+        $nextDartsTournament = $this->tournamentService->getNext('darts');
 
         return $this->render("home/index.html.twig", [
             'usersSnookerRank' => $usersSnookerRank,
             'usersDartsRank' => $usersDartsRank,
             'playersSnookerRank' => $playersSnookerRank,
-            'playersDartsRank' => $playersDartsRank
+            'playersDartsRank' => $playersDartsRank,
+            'snookerTournament' => $nextSnookerTournament,
+            'dartsTournament' => $nextDartsTournament
         ]);
     }
 }

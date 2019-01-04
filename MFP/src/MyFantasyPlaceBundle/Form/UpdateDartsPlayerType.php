@@ -17,7 +17,6 @@ class UpdateDartsPlayerType extends AbstractType
         $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'null' => null,
                     'running' => 'running',
                     'out' => 'out'
                 ]

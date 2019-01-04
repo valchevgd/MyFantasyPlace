@@ -116,7 +116,8 @@ class TournamentsController extends Controller
 
         return $this->render('admin/start_tournament.html.twig', [
             'tournament' => $nextTournament,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'type' => $type
         ]);
     }
 
@@ -164,6 +165,7 @@ class TournamentsController extends Controller
         return $this->render('admin/finish_tournament.html.twig', [
             'tournament' => $currentTournament,
             'form' => $form->createView(),
+            'type' => $type
         ]);
     }
 }

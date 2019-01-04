@@ -73,14 +73,14 @@ class UserService implements UserServiceInterface
 
     public function getSnookerRank()
     {
-        $rank = $this->userRepository->findBy(['isAdmin' => false],['snookerTotalPoints' => 'desc'], 5);
+        $rank = $this->userRepository->findBy(['isAdmin' => false],['snookerSeasonPoints' => 'desc'], 5);
 
         return $rank;
     }
 
     public function getDartsRank()
     {
-        $rank = $this->userRepository->findBy(['isAdmin' => false],['dartsTotalPoints' => 'desc'], 5);
+        $rank = $this->userRepository->findBy(['isAdmin' => false],['dartsSeasonPoints' => 'desc'], 5);
 
         return $rank;
     }

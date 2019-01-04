@@ -57,21 +57,15 @@ class User implements UserInterface
      *
      * @ORM\Column(name="darts_team_value", type="float")
      */
-    private $dartsTeamValue = 35;
+    private $dartsTeamValue = 28;
+
 
     /**
      * @var float
      *
-     * @ORM\Column(name="darts_tournament_team_value", type="float")
+     * @ORM\Column(name="darts_season_points", type="float")
      */
-    private $dartsTournamentTeamValue = 20;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="darts_total_points", type="float")
-     */
-    private $dartsTotalPoints = 0;
+    private $dartsSeasonPoints = 0;
 
     /**
      * @var float
@@ -85,21 +79,15 @@ class User implements UserInterface
      *
      * @ORM\Column(name="snooker_team_value", type="float")
      */
-    private $snookerTeamValue = 35;
+    private $snookerTeamValue = 28;
+
 
     /**
      * @var float
      *
-     * @ORM\Column(name="snooker_tournament_team_value", type="float")
+     * @ORM\Column(name="snooker_season_points", type="float")
      */
-    private $snookerTournamentTeamValue = 20;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="snooker_total_points", type="float")
-     */
-    private $snookerTotalPoints = 0;
+    private $snookerSeasonPoints = 0;
 
     /**
      * @var float
@@ -125,14 +113,14 @@ class User implements UserInterface
     /**
      * @var ArrayCollection|DartsPlayer[]
      *
-     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="userId")
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="userId", cascade={"remove"})
      */
     private $dartsPlayers;
 
     /**
      * @var ArrayCollection|SnookerPlayer[]
      *
-     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="userId")
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="userId", cascade={"remove"})
      */
     private $snookerPlayers;
 
@@ -149,7 +137,6 @@ class User implements UserInterface
         $this->snookerPlayers = new ArrayCollection();
     }
 
-
     public function getImage()
     {
         return $this->image;
@@ -162,8 +149,6 @@ class User implements UserInterface
     {
         $this->image = $image;
     }
-
-
 
     /**
      * @return ArrayCollection|SnookerPlayer[]
@@ -329,52 +314,30 @@ class User implements UserInterface
         return $this->dartsTeamValue;
     }
 
+
+
     /**
-     * Set dartsTournamentTeamValue
+     * Set dartsSeasonPoints
      *
-     * @param float $dartsTournamentTeamValue
+     * @param float $dartsSeasonPoints
      *
      * @return User
      */
-    public function setDartsTournamentTeamValue($dartsTournamentTeamValue)
+    public function setDartsSeasonPoints($dartsSeasonPoints)
     {
-        $this->dartsTournamentTeamValue = $dartsTournamentTeamValue;
+        $this->dartsSeasonPoints = $dartsSeasonPoints;
 
         return $this;
     }
 
     /**
-     * Get dartsTournamentTeamValue
+     * Get dartsSeasonPoints
      *
      * @return float
      */
-    public function getDartsTournamentTeamValue()
+    public function getDartsSeasonPoints()
     {
-        return $this->dartsTournamentTeamValue;
-    }
-
-    /**
-     * Set dartsTotalPoints
-     *
-     * @param float $dartsTotalPoints
-     *
-     * @return User
-     */
-    public function setDartsTotalPoints($dartsTotalPoints)
-    {
-        $this->dartsTotalPoints = $dartsTotalPoints;
-
-        return $this;
-    }
-
-    /**
-     * Get dartsTotalPoints
-     *
-     * @return float
-     */
-    public function getDartsTotalPoints()
-    {
-        return $this->dartsTotalPoints;
+        return $this->dartsSeasonPoints;
     }
 
     /**
@@ -425,52 +388,29 @@ class User implements UserInterface
         return $this->snookerTeamValue;
     }
 
+
     /**
-     * Set snookerTournamentTeamValue
+     * Set snookerSeasonPoints
      *
-     * @param float $snookerTournamentTeamValue
+     * @param float $snookerSeasonPoints
      *
      * @return User
      */
-    public function setSnookerTournamentTeamValue($snookerTournamentTeamValue)
+    public function setSnookerSeasonPoints($snookerSeasonPoints)
     {
-        $this->snookerTournamentTeamValue = $snookerTournamentTeamValue;
+        $this->snookerSeasonPoints = $snookerSeasonPoints;
 
         return $this;
     }
 
     /**
-     * Get snookerTournamentTeamValue
+     * Get snookerSeasonPoints
      *
      * @return float
      */
-    public function getSnookerTournamentTeamValue()
+    public function getSnookerSeasonPoints()
     {
-        return $this->snookerTournamentTeamValue;
-    }
-
-    /**
-     * Set snookerTotalPoints
-     *
-     * @param float $snookerTotalPoints
-     *
-     * @return User
-     */
-    public function setSnookerTotalPoints($snookerTotalPoints)
-    {
-        $this->snookerTotalPoints = $snookerTotalPoints;
-
-        return $this;
-    }
-
-    /**
-     * Get snookerTotalPoints
-     *
-     * @return float
-     */
-    public function getSnookerTotalPoints()
-    {
-        return $this->snookerTotalPoints;
+        return $this->snookerSeasonPoints;
     }
 
     /**

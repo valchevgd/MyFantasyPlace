@@ -95,7 +95,7 @@ class SnookerPlayer
     /**
      * @var ArrayCollection|User
      *
-     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="playerId")
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="playerId", cascade={"remove"})
      */
     private $users;
 

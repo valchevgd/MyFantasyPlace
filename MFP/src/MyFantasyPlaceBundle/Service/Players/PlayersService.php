@@ -81,6 +81,11 @@ class PlayersService implements PlayersServiceInterface
             $this->$repository->remove($player);
 
         }
+
+        $this->$repository->restartPlayersForSeason();
+
+        $typeOfPointsToReset = 'u.'.$type.'SeasonPoints';
+        $this->userRepository->restartUsersForSeason($typeOfPointsToReset);
     }
 
     public function updateDartsPlayer(DartsPlayerToUpdateDTO $formData)
@@ -101,7 +106,7 @@ class PlayersService implements PlayersServiceInterface
             /** @var User $userToUpdate */
             $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
             $userToUpdate->setDartsTournamentPoints($userToUpdate->getDartsTournamentPoints() + ($fantasyPoints * $user['level']));
-            $userToUpdate->setDartsTotalPoints($userToUpdate->getDartsTotalPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setDartsSeasonPoints($userToUpdate->getDartsSeasonPoints() + ($fantasyPoints * $user['level']));
             $userToUpdate->setFantasyTokens($userToUpdate->getFantasyTokens() + ($fantasyPoints * $user['level']));
 
             $this->userRepository->updateUser($userToUpdate);
@@ -142,6 +147,9 @@ class PlayersService implements PlayersServiceInterface
         $pointsFromCenturies = 0;
 
         foreach ($centuries as $century) {
+            if ($century != 0 and ($centuries < 100 or $century > 148)){
+                throw new Exception('Invalid value! Any series over one hundred should be between 100 and 148!');
+            }
             $pointsFromCenturies += $century;
         }
 
@@ -153,7 +161,7 @@ class PlayersService implements PlayersServiceInterface
             /** @var User $userToUpdate */
             $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
             $userToUpdate->setSnookerTournamentPoints($userToUpdate->getSnookerTournamentPoints() + ($fantasyPoints * $user['level']));
-            $userToUpdate->setSnookerTotalPoints($userToUpdate->getSnookerTotalPoints() + ($fantasyPoints * $user['level']));
+            $userToUpdate->setSnookerSeasonPoints($userToUpdate->getSnookerSeasonPoints() + ($fantasyPoints * $user['level']));
             $userToUpdate->setFantasyTokens($userToUpdate->getFantasyTokens() + ($fantasyPoints * $user['level']));
 
             $this->userRepository->updateUser($userToUpdate);
@@ -177,7 +185,6 @@ class PlayersService implements PlayersServiceInterface
         $snookerPlayer->setTournamentFantasyPoints($snookerPlayer->getTournamentFantasyPoints() + $fantasyPoints);
         $snookerPlayer->setSeasonPoints($snookerPlayer->getSeasonFantasyPoints() + $fantasyPoints);
 
-        $snookerPlayer->setValue($formData->getValue());
         $snookerPlayer->setStatus($formData->getStatus());
 
         return $this->snookerPlayerRepository->update($snookerPlayer);
@@ -223,7 +230,7 @@ class PlayersService implements PlayersServiceInterface
 
         $repository = $type . 'PlayerRepository';
 
-        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running']);
+        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running'],['value' => 'desc']);
 
         if ($playerWithStatus){
             throw new Exception('There are still players with status "running"! Please update players first!');

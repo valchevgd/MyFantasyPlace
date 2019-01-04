@@ -78,7 +78,7 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder();
 
         $qb->select('u.id', 'usp.level')
-            ->from('MyFantasyPlaceBundle:SnookerPlayer','usp')
+            ->from('MyFantasyPlaceBundle:UserSnookerPlayer','usp')
             ->innerJoin('usp.userId', 'u')
             ->where('usp.playerId = :id')
             ->setParameter('id', $id)

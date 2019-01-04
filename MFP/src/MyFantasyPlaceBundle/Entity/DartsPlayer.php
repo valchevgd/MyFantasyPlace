@@ -111,7 +111,7 @@ class DartsPlayer
     /**
      * @var ArrayCollection|User
      *
-     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="playerId")
+     * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserDartsPlayer", mappedBy="playerId", cascade={"remove"})
      */
     private $users;
 

@@ -3,6 +3,22 @@
 {% block body %}
     {% if app.user %}
         <div class="container body-content">
+            <div style="color:white; background-color: darkred; text-align: center; border-radius: 10px">
+                <div>
+                    {% if snookerTournament %}
+                        Next Snooker Tournament is {{ snookerTournament.name }}, starting at {{ snookerTournament.startingDate|date('d-M-Y') }}
+                    {% else %}
+                        No scheduled snooker tournament
+                    {% endif %}
+                </div>
+                <div>
+                    {% if dartsTournament %}
+                        Next Darts Tournament is {{ dartsTournament.name }}, starting at {{ dartsTournament.startingDate|date('d-M-Y') }}
+                    {% else %}
+                        No scheduled darts tournament
+                    {% endif %}
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
@@ -19,7 +35,7 @@
                                              height="20"></td>
                                     <td><a href="{{ path('profile', {'id':user.id}) }}"
                                            style="color: white">{{ user.username }}</a></td>
-                                    <td style="text-align: center">{{ user.snookerTotalPoints }}</td>
+                                    <td style="text-align: center">{{ user.snookerSeasonPoints }}</td>
                                 </tr>
                             {% endfor %}
                         </table>
@@ -37,8 +53,9 @@
                                 <tr>
                                     <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
                                     </td>
-                                    <td><a href="{{ path('profile', {'id':user.id}) }}" style="color: white">{{ user.username }}</a></td>
-                                    <td style="text-align: center">{{ user.dartsTotalPoints }}</td>
+                                    <td><a href="{{ path('profile', {'id':user.id}) }}"
+                                           style="color: white">{{ user.username }}</a></td>
+                                    <td style="text-align: center">{{ user.dartsSeasonPoints }}</td>
                                 </tr>
                             {% endfor %}
                         </table>

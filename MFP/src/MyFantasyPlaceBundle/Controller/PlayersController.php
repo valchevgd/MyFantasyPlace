@@ -171,11 +171,18 @@ class PlayersController extends Controller
 
             $typeToUpdate = 'update'.ucfirst($type).'Player';
 
-            $this->playersService->$typeToUpdate($dataFromForm);
-            $this->addFlash('message', 'The player is successfully update!');
-           return $this->redirectToRoute('update_players_results', [
-               'type' => $type
-           ]);
+            try {
+                $this->playersService->$typeToUpdate($dataFromForm);
+                $this->addFlash('message', 'The player is successfully update!');
+                return $this->redirectToRoute('update_players_results', [
+                    'type' => $type
+                ]);
+            }catch (\Exception $exception){
+                $this->addFlash('message', $exception->getMessage());
+                return $this->redirectToRoute('update_players_results', [
+                    'type' => $type
+                ]);
+            }
         }
         return $this->render('admin/update_player.html.twig', [
             'form' => $form->createView(),
@@ -238,7 +245,7 @@ class PlayersController extends Controller
 
             try {
                 if ($this->playersService->updateValue($player, $type)) {
-                    $this->addFlash('message', 'The player`s value is successfully update!');
+                    $this->addFlash('message', $player->getName().'`s value is successfully update!');
                     return $this->redirectToRoute('update_players_value', [
                         'type' => $type
                     ]);

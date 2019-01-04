@@ -2,13 +2,11 @@
 
 namespace MyFantasyPlaceBundle\Service\Tournament;
 
-
-use MyFantasyPlaceBundle\Entity\DartsPlayer;
-use MyFantasyPlaceBundle\Entity\SnookerPlayer;
 use MyFantasyPlaceBundle\Entity\Tournament;
 use MyFantasyPlaceBundle\Repository\DartsPlayerRepository;
 use MyFantasyPlaceBundle\Repository\SnookerPlayerRepository;
 use MyFantasyPlaceBundle\Repository\TournamentRepository;
+use MyFantasyPlaceBundle\Repository\UserRepository;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class TournamentService implements TournamentServiceInterface
@@ -27,18 +25,26 @@ class TournamentService implements TournamentServiceInterface
     private $snookerPlayerRepository;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * TournamentService constructor.
      * @param TournamentRepository $tournamentRepository
      * @param DartsPlayerRepository $dartsPlayerRepository
      * @param SnookerPlayerRepository $snookerPlayerRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(TournamentRepository $tournamentRepository,
                                 DartsPlayerRepository $dartsPlayerRepository,
-                                SnookerPlayerRepository $snookerPlayerRepository)
+                                SnookerPlayerRepository $snookerPlayerRepository,
+                                UserRepository $userRepository)
     {
         $this->tournamentRepository = $tournamentRepository;
         $this->dartsPlayerRepository = $dartsPlayerRepository;
         $this->snookerPlayerRepository = $snookerPlayerRepository;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -91,33 +97,15 @@ class TournamentService implements TournamentServiceInterface
             throw new Exception('\'There are still players with status "running" OR players with no updated value! Please update players first!');
         }
 
-        $tournament->setStatus('finished');
-
-        $this->tournamentRepository->update($tournament);
-
+        $typeOfPointsToReset = 'u.'.$type.'TournamentPoints';
+        $this->userRepository->restartUsersForTournament($typeOfPointsToReset);
 
         $this->$repository->restartPlayersForTournament();
 
+        $tournament->setStatus('finished');
 
+        $this->tournamentRepository->update($tournament);
         return true;
     }
 
-    private function snookerType(SnookerPlayer $player)
-    {
-        $player->setTournamentFantasyPoints(0);
-        $player->setTournamentOverSeventy(0);
-        $player->setTournamentCenturies(0);
-
-        return $player;
-    }
-
-    private function dartsType(DartsPlayer $player)
-    {
-        $player->setTournamentFantasyPoints(0);
-        $player->setTournamentOverHundred(0);
-        $player->setTournamentOverOneHundredAndForty(0);
-        $player->setTournamentMaximums(0);
-
-        return $player;
-    }
 }

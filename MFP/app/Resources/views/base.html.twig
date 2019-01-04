@@ -121,11 +121,9 @@
             <div class="navbar navbar-default navbar-fixed-top"
                  style="background-color: darkred">
                 <div class="container">
+                    <span style="color: white">Remaining SnookerBudget : {{ app.user.snookerTeamValue }}</span>
+                    <span style="color: white">Remaining Darts Budget : {{ app.user.dartsTeamValue }}</span>
                     <span style="color: white">Fantasy Tokens : {{ app.user.fantasyTokens }}</span>
-                    <span style="color: white">Snooker Team Budget : {{ app.user.snookerTeamValue }}</span>
-                    <span style="color: white">Snooker Tournament Budget : {{ app.user.snookerTournamentTeamValue }}</span>
-                    <span style="color: white">Darts Team Budget : {{ app.user.dartsTeamValue }}</span>
-                    <span style="color: white">Darts Tournament Budget : {{ app.user.dartsTournamentTeamValue }}</span>
                 </div>
             </div>
         {% endif %}

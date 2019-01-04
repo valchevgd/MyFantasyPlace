@@ -46,12 +46,26 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder();
 
         $qb->update('MyFantasyPlaceBundle:SnookerPlayer', 'sp')
-            ->set('sp.tournamentOverSeventy', 0)
-            ->set('sp.tournamentCenturies', 0)
-            ->set('sp.tournamentFantasyPoints', 0)
-            ->set('sp.status', null)
-            ->set('sp.newStatus', false)
+            ->set('sp.tournamentOverSeventy', '0')
+            ->set('sp.tournamentCenturies', '0')
+            ->set('sp.tournamentFantasyPoints', '0')
+            ->set('sp.status', 'null')
+            ->set('sp.newStatus', 'false')
             ->getQuery();
+
+        $qb->getQuery()->execute();
     }
 
+    public function restartPlayersForSeason()
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:SnookerPlayer', 'sp')
+            ->set('sp.seasonOverSeventy', '0')
+            ->set('sp.seasonCenturies', '0')
+            ->set('sp.seasonFantasyPoints', '0')
+            ->getQuery();
+
+        $qb->getQuery()->execute();
+    }
 }

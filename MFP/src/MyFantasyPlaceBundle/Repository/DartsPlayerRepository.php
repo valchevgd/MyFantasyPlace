@@ -46,13 +46,30 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder();
 
         $qb->update('MyFantasyPlaceBundle:DartsPlayer', 'dp')
-            ->set('dp.tournamentOverOneHundred', 0)
-            ->set('dp.tournamentOverOneHundredAndForty', 0)
-            ->set('dp.tournamentMaximums', 0)
-            ->set('dp.tournamentFantasyPoints', 0)
-            ->set('dp.status', null)
-            ->set('dp.newStatus', false)
+            ->set('dp.tournamentOverHundred', '0')
+            ->set('dp.tournamentOverOneHundredAndForty', '0')
+            ->set('dp.tournamentMaximums', '0')
+            ->set('dp.tournamentFantasyPoints', '0')
+            ->set('dp.status', 'null')
+            ->set('dp.newStatus', 'false')
             ->getQuery();
+
+        $qb->getQuery()->execute();
+    }
+
+    public function restartPlayersForSeason()
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->update('MyFantasyPlaceBundle:DartsPlayer', 'dp')
+            ->set('dp.seasonOverHundred', '0')
+            ->set('dp.seasonOverOneHundredAndForty', '0')
+            ->set('dp.seasonMaximums', '0')
+            ->set('dp.seasonFantasyPoints', '0')
+
+            ->getQuery();
+
+        $qb->getQuery()->execute();
     }
 
 
