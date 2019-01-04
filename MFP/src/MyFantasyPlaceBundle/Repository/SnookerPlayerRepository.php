@@ -50,7 +50,7 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->set('sp.tournamentCenturies', '0')
             ->set('sp.tournamentFantasyPoints', '0')
             ->set('sp.status', 'null')
-            ->set('sp.newStatus', 'false')
+            ->set('sp.newValue', 'false')
             ->getQuery();
 
         $qb->getQuery()->execute();

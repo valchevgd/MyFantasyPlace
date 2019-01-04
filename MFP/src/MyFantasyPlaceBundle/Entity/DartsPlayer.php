@@ -103,9 +103,9 @@ class DartsPlayer
     /**
      * @var boolean
      *
-     * @ORM\Column(name="new_status", type="boolean")
+     * @ORM\Column(name="new_value", type="boolean")
      */
-    private $newStatus = false;
+    private $newValue = false;
 
 
     /**
@@ -417,17 +417,17 @@ class DartsPlayer
     /**
      * @return bool
      */
-    public function getNewStatus()
+    public function getNewValue()
     {
-        return $this->newStatus;
+        return $this->newValue;
     }
 
     /**
-     * @param bool $newStatus
+     * @param bool $newValue
      */
-    public function setNewStatus(bool $newStatus): void
+    public function setNewValue(bool $newValue): void
     {
-        $this->newStatus = $newStatus;
+        $this->newValue = $newValue;
     }
 
 

@@ -57,7 +57,7 @@ class TournamentsController extends Controller
         $tournament->setType($type);
         if ($form->isSubmitted() and $form->isValid()) {
             if ($this->tournamentService->addTournament($tournament)) {
-                $this->addFlash('message', 'Tournament are successfully added');
+                $this->addFlash('message', $tournament->getName() .' is successfully added');
             }
 
             return $this->redirectToRoute('add_tournament', [

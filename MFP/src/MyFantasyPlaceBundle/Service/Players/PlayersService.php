@@ -218,7 +218,7 @@ class PlayersService implements PlayersServiceInterface
     public function getPlayerToUpdate($type)
     {
         $repository = $type . 'PlayerRepository';
-        $player = $this->$repository->findOneBy(['newStatus' => false]);
+        $player = $this->$repository->findOneBy(['newValue' => false]);
 
         return $player;
     }
@@ -237,7 +237,7 @@ class PlayersService implements PlayersServiceInterface
         }
 
 
-        $player->setNewStatus(true);
+        $player->setNewValue(true);
         return $player = $this->$repository->update($player);
     }
 }

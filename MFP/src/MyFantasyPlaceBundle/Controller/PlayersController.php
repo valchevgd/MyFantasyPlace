@@ -67,12 +67,12 @@ class PlayersController extends Controller
 
             try {
                 if ($this->playersService->addPlayer($player, $type)) {
-                    $this->addFlash('message', 'Player added successfully');
+                    $this->addFlash('message', $player->getName(). ' is added successfully');
                 } else {
                     $this->addFlash('message', 'Unsuccessful addition, please try again');
                 }
             } catch (UniqueConstraintViolationException $exception) {
-                $this->addFlash('message', 'This player is already added!');
+                $this->addFlash('message', $player->getName(). ' is already added!');
             }
 
             return $this->redirectToRoute('add_player', [

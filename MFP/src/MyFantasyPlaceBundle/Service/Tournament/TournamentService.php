@@ -91,7 +91,7 @@ class TournamentService implements TournamentServiceInterface
         $repository = $type . 'PlayerRepository';
 
         $playerWithStatus = $this->$repository->findOneBy(['status' => 'running']);
-        $playerWithoutNewValue = $this->$repository->findOneBy(['newStatus' => false]);
+        $playerWithoutNewValue = $this->$repository->findOneBy(['newValue' => false]);
 
         if ($playerWithStatus or $playerWithoutNewValue) {
             throw new Exception('\'There are still players with status "running" OR players with no updated value! Please update players first!');

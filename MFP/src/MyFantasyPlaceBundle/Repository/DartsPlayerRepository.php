@@ -51,7 +51,7 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->set('dp.tournamentMaximums', '0')
             ->set('dp.tournamentFantasyPoints', '0')
             ->set('dp.status', 'null')
-            ->set('dp.newStatus', 'false')
+            ->set('dp.newValue', 'false')
             ->getQuery();
 
         $qb->getQuery()->execute();

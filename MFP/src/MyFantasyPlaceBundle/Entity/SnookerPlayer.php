@@ -88,9 +88,9 @@ class SnookerPlayer
     /**
      * @var boolean
      *
-     * @ORM\Column(name="new_status", type="boolean")
+     * @ORM\Column(name="new_value", type="boolean")
      */
-    private $newStatus;
+    private $newValue = false;
 
     /**
      * @var ArrayCollection|User
@@ -349,17 +349,17 @@ class SnookerPlayer
     /**
      * @return bool
      */
-    public function getNewStatus()
+    public function getNewValue()
     {
-        return $this->newStatus;
+        return $this->newValue;
     }
 
     /**
-     * @param bool $newStatus
+     * @param bool $newValue
      */
-    public function setNewStatus(bool $newStatus)
+    public function setNewValue(bool $newValue)
     {
-        $this->newStatus = $newStatus;
+        $this->newValue = $newValue;
     }
 
 
