@@ -23,12 +23,9 @@ class UpdateSnookerPlayerType extends AbstractType
                 ]
             ])->add('pointsScored', NumberType::class)
             ->add('id', HiddenType::class)
-            ->add('overFifty', NumberType::class)
-            ->add('overSixty', NumberType::class)
-            ->add('overSeventy', NumberType::class)
-            ->add('overEighty', NumberType::class)
-            ->add('overNinety', NumberType::class)
-            ->add('overHundred', TextType::class)
+            ->add('breaks', TextType::class, [
+                'label' => '50+ Breaks'
+            ])
             ->add('Update', SubmitType::class);
     }
 

@@ -13,25 +13,9 @@ class SnookerPlayerToUpdateDTO
     /** @var integer */
     private $pointsScored = 0;
 
-    /** @var integer */
-    private $overFifty = 0;
-
-    /** @var integer */
-    private $overSixty = 0;
-
-    /** @var integer */
-    private $overSeventy = 0;
-
-    /** @var integer */
-    private $overEighty = 0;
-
-    /** @var integer */
-    private $overNinety = 0;
 
     /** @var string */
-    private $overHundred = 0;
-
-
+    private $breaks = 0;
 
     /**
      * @return mixed
@@ -49,14 +33,18 @@ class SnookerPlayerToUpdateDTO
         $this->id = $id;
     }
 
-
-
+    /**
+     * @return null
+     */
     public function getStatus()
     {
         return $this->status;
     }
 
-    public function setStatus($status)
+    /**
+     * @param null $status
+     */
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
@@ -78,100 +66,21 @@ class SnookerPlayerToUpdateDTO
     }
 
     /**
-     * @return int
-     */
-    public function getOverFifty(): int
-    {
-        return $this->overFifty;
-    }
-
-    /**
-     * @param int $overFifty
-     */
-    public function setOverFifty(int $overFifty): void
-    {
-        $this->overFifty = $overFifty;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOverSixty(): int
-    {
-        return $this->overSixty;
-    }
-
-    /**
-     * @param int $overSixty
-     */
-    public function setOverSixty(int $overSixty): void
-    {
-        $this->overSixty = $overSixty;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOverSeventy(): int
-    {
-        return $this->overSeventy;
-    }
-
-    /**
-     * @param int $overSeventy
-     */
-    public function setOverSeventy(int $overSeventy): void
-    {
-        $this->overSeventy = $overSeventy;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOverEighty(): int
-    {
-        return $this->overEighty;
-    }
-
-    /**
-     * @param int $overEighty
-     */
-    public function setOverEighty(int $overEighty): void
-    {
-        $this->overEighty = $overEighty;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOverNinety(): int
-    {
-        return $this->overNinety;
-    }
-
-    /**
-     * @param int $overNinety
-     */
-    public function setOverNinety(int $overNinety): void
-    {
-        $this->overNinety = $overNinety;
-    }
-
-    /**
      * @return string
      */
-    public function getOverHundred()
+    public function getBreaks(): string
     {
-        return $this->overHundred;
+        return $this->breaks;
     }
 
     /**
-     * @param string $overHundred
+     * @param string $breaks
      */
-    public function setOverHundred(string $overHundred): void
+    public function setBreaks(string $breaks): void
     {
-        $this->overHundred = $overHundred;
+        $this->breaks = $breaks;
     }
+
 
 
 }

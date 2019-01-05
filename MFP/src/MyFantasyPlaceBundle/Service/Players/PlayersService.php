@@ -84,7 +84,7 @@ class PlayersService implements PlayersServiceInterface
 
         $this->$repository->restartPlayersForSeason();
 
-        $typeOfPointsToReset = 'u.'.$type.'SeasonPoints';
+        $typeOfPointsToReset = 'u.' . $type . 'SeasonPoints';
         $this->userRepository->restartUsersForSeason($typeOfPointsToReset);
     }
 
@@ -102,7 +102,7 @@ class PlayersService implements PlayersServiceInterface
 
         $users = $this->userDartsPlayerRepository->findUsers($dartsPlayer->getId());
 
-        foreach ($users as $user){
+        foreach ($users as $user) {
             /** @var User $userToUpdate */
             $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
             $userToUpdate->setDartsTournamentPoints($userToUpdate->getDartsTournamentPoints() + ($fantasyPoints * $user['level']));
@@ -135,29 +135,42 @@ class PlayersService implements PlayersServiceInterface
         $snookerPlayer = $this->snookerPlayerRepository->find($formData->getId());
 
         $fantasyPoints = $formData->getPointsScored() / 10;
-        $fantasyPoints += $formData->getOverFifty() * 5;
-        $fantasyPoints += $formData->getOverSixty() * 6;
-        $fantasyPoints += $formData->getOverSeventy() * 7;
-        $fantasyPoints += $formData->getOverEighty() * 8;
-        $fantasyPoints += $formData->getOverNinety() * 9;
 
+        $breaks = array_map('intval', explode(', ', $formData->getBreaks()));
 
-        $centuries = array_map('intval', explode(', ', $formData->getOverHundred()));
+        $pointsFromBreaks = 0;
+        $overSeventy = 0;
+        $overHundred = 0;
 
-        $pointsFromCenturies = 0;
-
-        foreach ($centuries as $century) {
-            if ($century != 0 and ($centuries < 100 or $century > 148)){
-                throw new Exception('Invalid value! Any series over one hundred should be between 100 and 148!');
+        foreach ($breaks as $break) {
+            if ($break != 0 and ($breaks < 50 or $break > 148)) {
+                throw new Exception('Invalid value! Any break should be between 50 and 148!');
             }
-            $pointsFromCenturies += $century;
+
+            if ($break >= 50 and $break < 60) {
+                $pointsFromBreaks += 5;
+            } elseif ($break >= 60 and $break < 70) {
+                $pointsFromBreaks += 6;
+            } elseif ($break >= 70 and $break < 80) {
+                $pointsFromBreaks += 7;
+                $overSeventy++;
+            } elseif ($break >= 80 and $break < 90) {
+                $pointsFromBreaks += 8;
+                $overSeventy++;
+            } elseif ($break >= 90 and $break < 100) {
+                $pointsFromBreaks += 9;
+                $overSeventy++;
+            } elseif ($break >= 100 and $break <= 148) {
+                $pointsFromBreaks += $break / 10;
+                $overHundred++;
+            }
         }
 
-        $fantasyPoints += $pointsFromCenturies / 10;
+        $fantasyPoints += $pointsFromBreaks;
 
         $users = $this->userSnookerPlayerRepository->findUsers($snookerPlayer->getId());
 
-        foreach ($users as $user){
+        foreach ($users as $user) {
             /** @var User $userToUpdate */
             $userToUpdate = $this->userRepository->findOneBy(['id' => $user['id']]);
             $userToUpdate->setSnookerTournamentPoints($userToUpdate->getSnookerTournamentPoints() + ($fantasyPoints * $user['level']));
@@ -168,16 +181,10 @@ class PlayersService implements PlayersServiceInterface
 
         }
 
-        $overSeventy = $formData->getOverSeventy() + $formData->getOverEighty() + $formData->getOverNinety();
 
         $snookerPlayer->setTournamentOverSeventy($snookerPlayer->getTournamentOverSeventy() + $overSeventy);
         $snookerPlayer->setSeasonOverSeventy($snookerPlayer->getSeasonOverSeventy() + $overSeventy);
 
-        if (intval($formData->getOverHundred()[0]) === 0) {
-            $overHundred = 0;
-        } else {
-            $overHundred = count(explode(', ', $formData->getOverHundred()));
-        }
 
         $snookerPlayer->setTournamentCenturies($snookerPlayer->getTournamentCenturies() + $overHundred);
         $snookerPlayer->setSeasonCenturies($snookerPlayer->getSeasonCenturies() + $overHundred);
@@ -194,7 +201,7 @@ class PlayersService implements PlayersServiceInterface
     {
         $repository = $type . 'PlayerRepository';
 
-        $rank = $this->$repository->findBy([],['seasonFantasyPoints' => 'desc'], 5);
+        $rank = $this->$repository->findBy([], ['seasonFantasyPoints' => 'desc'], 5);
 
         return $rank;
     }
@@ -230,9 +237,9 @@ class PlayersService implements PlayersServiceInterface
 
         $repository = $type . 'PlayerRepository';
 
-        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running'],['value' => 'desc']);
+        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running'], ['value' => 'desc']);
 
-        if ($playerWithStatus){
+        if ($playerWithStatus) {
             throw new Exception('There are still players with status "running"! Please update players first!');
         }
 
