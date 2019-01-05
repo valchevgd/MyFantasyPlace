@@ -143,7 +143,11 @@ class PlayersService implements PlayersServiceInterface
         $overHundred = 0;
 
         foreach ($breaks as $break) {
-            if ($break != 0 and ($breaks < 50 or $break > 148)) {
+
+            if ($break === 0){
+                break;
+            }
+            if ($breaks < 50 or $break > 148) {
                 throw new Exception('Invalid value! Any break should be between 50 and 148!');
             }
 
