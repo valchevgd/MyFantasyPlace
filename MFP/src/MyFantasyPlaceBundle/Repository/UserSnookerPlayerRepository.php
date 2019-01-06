@@ -53,16 +53,17 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->_em->createQueryBuilder();
 
-        $qb->select('sp.id', 'sp.name', 'sp.value', 'sp.seasonFantasyPoints', 'usp.level', 'usp.progress', 'usp.value - usp.progress as nextLevelValue')
+         $qb->select('sp.id', 'sp.name', 'sp.value', 'sp.seasonFantasyPoints', 'usp.level', 'usp.progress', 'usp.value - usp.progress as nextLevelValue')
             ->from('MyFantasyPlaceBundle:UserSnookerPlayer','usp')
             ->innerJoin('usp.playerId', 'sp')
             ->where('usp.userId = :userId and usp.playerId = :playerId')
             ->setParameter('userId', $userId)
             ->setParameter('playerId', $playerId)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->setMaxResults(1)
+            ->getQuery();
 
-        return $qb->getQuery()->getOneOrNullResult();
+         return $qb->getQuery()->getSingleResult();
+
     }
 
     public function delete($relation)

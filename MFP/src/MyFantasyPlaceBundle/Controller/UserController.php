@@ -2,18 +2,22 @@
 
 namespace MyFantasyPlaceBundle\Controller;
 
+use MyFantasyPlaceBundle\DTO\ChangePasswordDTO;
 use MyFantasyPlaceBundle\Entity\User;
+use MyFantasyPlaceBundle\Form\ChangePasswordType;
+use MyFantasyPlaceBundle\Form\DeleteAccountType;
 use MyFantasyPlaceBundle\Form\UserType;
 use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use MyFantasyPlaceBundle\Service\UserPlayer\UserPlayerServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserController extends Controller
 {
@@ -54,9 +58,9 @@ class UserController extends Controller
         if ($form->isSubmitted() and $form->isValid()) {
 
 
-            try{
+            try {
                 $this->userService->register($user);
-            }catch (Exception $exception){
+            } catch (Exception $exception) {
                 $this->addFlash('message', $exception->getMessage());
                 return $this->redirectToRoute('user_register');
             }
@@ -91,16 +95,16 @@ class UserController extends Controller
         $snookerPlayers = $this->userPlayerService->findUsersPlayers($viewUser->getSnookerPlayers()->toArray());
         $dartsPlayers = $this->userPlayerService->findUsersPlayers($viewUser->getDartsPlayers()->toArray());
 
-        if ($form->isSubmitted() and $form->isValid()){
+        if ($form->isSubmitted() and $form->isValid()) {
 
             /** @var UploadedFile $file */
             $file = $form->get('image')->getData();
             $username = $form->get('username')->getData();
             $email = $form->get('email')->getData();
 
-            $currentUser = $this->userService->prepareUser($currentUser, $username, $email,  $file);
+            $currentUser = $this->userService->prepareUser($currentUser, $username, $email, $file);
 
-            if($this->userService->update($currentUser)){
+            if ($this->userService->update($currentUser)) {
                 return $this->redirectToRoute('profile', [
                     'id' => $id
                 ]);
@@ -113,6 +117,73 @@ class UserController extends Controller
             'viewUser' => $viewUser,
             'form' => $form->createView()
 
+        ]);
+    }
+
+    /**
+     * @Route("/user_change_password", name="change_password")
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return Response
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $newPassword = new ChangePasswordDTO();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $form = $this->createForm(ChangePasswordType::class, $newPassword);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+
+            if ($this->userService->changePassword($user, $newPassword)) {
+                return $this->redirectToRoute('profile', [
+                    'id' => $user->getId()
+                ]);
+            }
+        }
+
+        return $this->render('user/change_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user_delete", name="user_delete")
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param TokenStorageInterface $tokenStorage
+     * @param SessionInterface $session
+     * @return Response
+     */
+    public function deleteAccountAction(Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session)
+    {
+        $form = $this->createForm(DeleteAccountType::class);
+        $form->handleRequest($request);
+
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() and $form->isValid()){
+            $password = $form->getData()['password'];
+
+            try{
+                $this->userService->deleteUser($user, $password);
+                $tokenStorage->setToken(null);
+                $session->invalidate();
+                return $this->redirectToRoute('index');
+            }catch (Exception $exception){
+                $this->addFlash('message', $exception->getMessage());
+                return $this->redirectToRoute('user_delete');
+            }
+
+        }
+
+        return $this->render('user/delete_account.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 

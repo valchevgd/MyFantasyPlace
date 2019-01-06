@@ -2,101 +2,122 @@
 
 {% block body %}
     {% if app.user %}
-        <div class="container body-content">
-            <div style="color:white; background-color: darkred; text-align: center; border-radius: 10px">
-                <div>
-                    {% if snookerTournament %}
-                        Next Snooker Tournament is {{ snookerTournament.name }}, starting at {{ snookerTournament.startingDate|date('d-M-Y') }}
-                    {% else %}
-                        No scheduled snooker tournament
-                    {% endif %}
-                </div>
-                <div>
-                    {% if dartsTournament %}
-                        Next Darts Tournament is {{ dartsTournament.name }}, starting at {{ dartsTournament.startingDate|date('d-M-Y') }}
-                    {% else %}
-                        No scheduled darts tournament
-                    {% endif %}
+<div class="container body-content">
+    <div style="color:white; background-color: darkred; text-align: center; border-radius: 10px">
+        <div>
+            {% if runningSnookerTournament %}
+                Running Snooker Tournament : {{ runningSnookerTournament.name }}
+            {% elseif snookerTournament %}
+                Next Snooker Tournament is {{ snookerTournament.name }}, starting at {{ snookerTournament.startingDate|date('d-M-Y') }}
+            {% else %}
+                No scheduled snooker tournament
+            {% endif %}
+        </div>
+        <div>
+            {% if runningDartsTournament %}
+                Running Darts Tournament : {{ runningDartsTournament.name }}
+            {% elseif dartsTournament %}
+                Next Darts Tournament is {{ dartsTournament.name }}, starting at {{ dartsTournament.startingDate|date('d-M-Y') }}
+            {% else %}
+                No scheduled darts tournament
+            {% endif %}
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">Snooker Users rank</h3>
+                    <table>
+                        <tr>
+                            <th colspan="2" style="text-align: center">Username</th>
+                            <th style="text-align: center">Total Fantasy Points</th>
+                        </tr>
+                        {% for user in usersSnookerRank %}
+                            <tr>
+
+                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30"
+                                         height="20"></td>
+                                <td><a href="{{ path('profile', {'id':user.id}) }}"
+                                       style="color: white">{{ user.username }}</a></td>
+                                <td style="text-align: center">{{ user.snookerSeasonPoints }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div style="text-align: end">
+                        <a href="{{ path('standing', {'type': 'snooker'}) }}"
+                           style="color: white">full standing</a>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Snooker Users rank</h3>
-                        <table>
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">Darts Users rank</h3>
+                    <table>
+                        <tr>
+                            <th colspan="2" style="text-align: center">Username</th>
+                            <th style="text-align: center">Total Fantas Points</th>
+                        </tr>
+                        {% for user in usersDartsRank %}
                             <tr>
-                                <th colspan="2" style="text-align: center">Username</th>
-                                <th style="text-align: center">Total Points</th>
+                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
+                                </td>
+                                <td><a href="{{ path('profile', {'id':user.id}) }}"
+                                       style="color: white">{{ user.username }}</a></td>
+                                <td style="text-align: center">{{ user.dartsSeasonPoints }}</td>
                             </tr>
-                            {% for user in usersSnookerRank %}
-                                <tr>
-
-                                    <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30"
-                                             height="20"></td>
-                                    <td><a href="{{ path('profile', {'id':user.id}) }}"
-                                           style="color: white">{{ user.username }}</a></td>
-                                    <td style="text-align: center">{{ user.snookerSeasonPoints }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
+                        {% endfor %}
+                    </table>
+                    <div style="text-align: end">
+                        <a href="{{ path('standing', {'type': 'darts'}) }}"
+                           style="color: white">full standing</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Darts Users rank</h3>
-                        <table>
+            </div>
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">Snooker Players rank</h3>
+                    <table style="text-align: center">
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Season Fantasy Points</th>
+                        </tr>
+                        {% for player in playersSnookerRank %}
                             <tr>
-                                <th colspan="2" style="text-align: center">Username</th>
-                                <th style="text-align: center">Total Points</th>
+                                <td>{{ player.name }}</td>
+                                <td>{{ player.seasonFantasyPoints }}</td>
                             </tr>
-                            {% for user in usersDartsRank %}
-                                <tr>
-                                    <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
-                                    </td>
-                                    <td><a href="{{ path('profile', {'id':user.id}) }}"
-                                           style="color: white">{{ user.username }}</a></td>
-                                    <td style="text-align: center">{{ user.dartsSeasonPoints }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
+                        {% endfor %}
+                    </table>
+                    <div style="text-align: end">
+                        <a href="{{ path('statistic', {'type': 'snooker', 'order': 'seasonFantasyPoints'}) }}"
+                           style="color: white">full ranking</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Snooker Players rank</h3>
-                        <table>
+            </div>
+            <div class="col-md-6">
+                <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
+                    <h3 style="text-align: center; color: white">Darts Players rank</h3>
+                    <table style="text-align: center">
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Fantasy Points</th>
+                        </tr>
+                        {% for player in playersDartsRank %}
                             <tr>
-                                <th style="text-align: center">Player Name</th>
-                                <th style="text-align: center">Fantasy Points</th>
+                                <td>{{ player.name }}</td>
+                                <td>{{ player.seasonFantasyPoints }}</td>
                             </tr>
-                            {% for player in playersSnookerRank %}
-                                <tr>
-                                    <td style="text-align: center">{{ player.name }}</td>
-                                    <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
-                        <h3 style="text-align: center; color: white">Darts Players rank</h3>
-                        <table>
-                            <tr>
-                                <th style="text-align: center">Player Name</th>
-                                <th style="text-align: center">Fantasy Points</th>
-                            </tr>
-                            {% for player in playersDartsRank %}
-                                <tr>
-                                    <td style="text-align: center">{{ player.name }}</td>
-                                    <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
+                        {% endfor %}
+                    </table>
+                    <div style="text-align: end">
+                        <a href="{{ path('statistic', {'type': 'darts', 'order': 'seasonFantasyPoints'}) }}"
+                           style="color: white">full ranking</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     {% else %}
         <div class="container body-content">
             <div class="row">
@@ -138,4 +159,4 @@
             </div>
         </div>
     {% endif %}
-{% endblock %}
+    {% endblock %}

@@ -33,12 +33,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function restartUsersForTournament(string $typeOfPointsToReset)
+    public function restartUsersForTournament(string $typeOfPointsToReset, string $typeOfTransfer)
     {
         $qb = $this->_em->createQueryBuilder();
 
         $qb->update('MyFantasyPlaceBundle:User', 'u')
             ->set($typeOfPointsToReset, '0')
+            ->set($typeOfTransfer, 'true')
             ->getQuery();
 
         $qb->getQuery()->execute();
@@ -53,5 +54,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+    }
+
+    public function removeUser($user)
+    {
+        $this->_em->remove($user);
+        $this->_em->flush();
+
+        return true;
     }
 }

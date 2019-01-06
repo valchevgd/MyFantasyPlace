@@ -5,6 +5,7 @@ namespace MyFantasyPlaceBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * UserService
@@ -24,6 +25,12 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotNull()
+     * @Assert\Length(
+     *     min=4,
+     *     max=20,
+     *     exactMessage="Username should be between 4 and 20 symbols!"
+     * )
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
@@ -31,6 +38,11 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @Assert\NotNull()
+     * @Assert\Email(
+     *     message="Invalid email!"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
@@ -38,6 +50,12 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @Assert\Length(
+     *     min=3,
+     *     max=20,
+     *     exactMessage="Password should be between 3 and 20 symbols!"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
@@ -118,11 +136,25 @@ class User implements UserInterface
     private $dartsPlayers;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="darts_transfer", type="boolean")
+     */
+    private $dartsTransfer = true;
+
+    /**
      * @var ArrayCollection|SnookerPlayer[]
      *
      * @ORM\OneToMany(targetEntity="MyFantasyPlaceBundle\Entity\UserSnookerPlayer", mappedBy="userId", cascade={"remove"})
      */
     private $snookerPlayers;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="snooker_transfer", type="boolean")
+     */
+    private $snookerTransfer = true;
 
     /**
      * @var string
@@ -484,6 +516,41 @@ class User implements UserInterface
     {
         return $this->isAdmin;
     }
+
+    /**
+     * @return bool
+     */
+    public function getDartsTransfer()
+    {
+        return $this->dartsTransfer;
+    }
+
+    /**
+     * @param bool $dartsTransfer
+     */
+    public function setDartsTransfer(bool $dartsTransfer)
+    {
+        $this->dartsTransfer = $dartsTransfer;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSnookerTransfer()
+    {
+        return $this->snookerTransfer;
+    }
+
+    /**
+     * @param bool $snookerTransfer
+     */
+    public function setSnookerTransfer(bool $snookerTransfer)
+    {
+        $this->snookerTransfer = $snookerTransfer;
+    }
+
+
+
 
     /**
      * Returns the roles granted to the user.

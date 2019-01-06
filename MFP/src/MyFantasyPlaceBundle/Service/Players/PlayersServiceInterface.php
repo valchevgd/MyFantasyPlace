@@ -19,7 +19,7 @@ interface PlayersServiceInterface
 
     public function getRank(string $type);
 
-    public function getAllPlayers(string $type);
+    public function getAllPlayers(string $type, string $order);
 
     public function getPlayer(string $type, int $id);
 

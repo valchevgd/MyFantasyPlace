@@ -1,0 +1,45 @@
+{% extends "statistic.html.twig" %}
+
+{% block stats %}
+    <div class="container body-content">
+        <table border="1" style="border: white; text-align: center">
+            <tr>
+                <th>Name</th>
+                {% if app.user %}
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'value'}) }}"
+                       style="color: white">Value</a></th>
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'seasonFantasyPoints'}) }}"
+                       style="color: white">Season Fantasy Points</a></th>
+                {% endif %}
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'seasonCenturies'}) }}"
+                       style="color: white">Season Centuries</a></th>
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'seasonOverSeventy'}) }}"
+                       style="color: white">Season Breaks 70+</a></th>
+                {% if app.user %}
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'tournamentFantasyPoints'}) }}"
+                       style="color: white">Tournament Fantasy Points</a></th>
+                {% endif %}
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'tournamentCenturies'}) }}"
+                       style="color: white">Tournament Centuries</a></th>
+                <th><a href="{{ path('statistic', {'type':'snooker', 'order':'tournamentOverSeventy'}) }}"
+                       style="color: white">Tournament Breaks 70+</a></th>
+            </tr>
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    {% if app.user %}
+                    <td>{{ player.value }}</td>
+                    <td>{{ player.seasonFantasyPoints }}</td>
+                    {% endif %}
+                    <td>{{ player.seasonCenturies }}</td>
+                    <td>{{ player.seasonOverSeventy }}</td>
+                    {% if app.user %}
+                    <td>{{ player.tournamentFantasyPoints }}</td>
+                    {% endif %}
+                    <td>{{ player.tournamentCenturies }}</td>
+                    <td>{{ player.tournamentOverSeventy }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

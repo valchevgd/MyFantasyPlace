@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content col-sm-6">
+        <div style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white; text-align: center">
+            {% for msg in app.session.flashBag.get('message') %}
+                <div class="alert alert-secondary ">
+                    {{ msg }}
+                </div>
+            {% endfor %}
+            <h2>Are you sure you want to delete your account?</h2>
+            <form method="post">
+                <div class="form-group">
+                    <input class="form-control" type="password" placeholder="Password"
+                           name="delete_account[password][first]">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" placeholder="Repeat Password"
+                           name="delete_account[password][second]">
+                </div>
+                {{ form_row(form._token) }}
+                <input class="btn btn-danger" type="submit" value="Delete Account">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

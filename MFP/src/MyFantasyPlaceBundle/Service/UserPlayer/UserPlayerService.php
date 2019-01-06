@@ -142,6 +142,11 @@ class UserPlayerService implements UserPlayerServiceInterface
 
     public function remove(User $user, string $type, int $playerId, float $playerValue)
     {
+        $typeOfTransfer = 'get'.ucfirst($type).'Transfer';
+        if (!$user->$typeOfTransfer()){
+            throw new Exception('You are out of transfer! You will have new transfer after running tournament is over.');
+        }
+
         $repository = 'user'.ucfirst($type).'PlayerRepository';
         $relation = $this->$repository->findOneBy(['userId' => $user->getId(), 'playerId' => $playerId]);
 
@@ -150,6 +155,9 @@ class UserPlayerService implements UserPlayerServiceInterface
             $setter = 'set'.ucfirst($type).'TeamValue';
 
             $user->$setter($user->$getter() + $playerValue);
+
+            $typeOfTransfer = 'set'.ucfirst($type).'Transfer';
+            $user->$typeOfTransfer(false);
 
             $this->userRepository->updateUser($user);
             return true;

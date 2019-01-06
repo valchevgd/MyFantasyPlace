@@ -186,21 +186,29 @@ class UserPlayerController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-        /** @var PlayerToViewDTO[] $userPlayers */
+        /** @var PlayerToViewDTO $players */
         $player = $this->userPlayerService->getPlayerToView($user->getId(), $type, $playerId);
 
         if ($request->getMethod() === 'POST'){
-            if($this->userPlayerService->remove($user, $type, $playerId, $player['value'])){
-                $this->addFlash('message', 'You successfully remove ' . $player['name'] . ' from your players!');
-                return $this->redirectToRoute('remove_players', [
-                    'type' => $type
-                ]);
-            }else{
-                $this->addFlash('message', 'Something went wrong!');
+            try{
+                if($this->userPlayerService->remove($user, $type, $playerId, $player['value'])){
+                    $this->addFlash('message', 'You successfully remove ' . $player['name'] . ' from your players!');
+                    return $this->redirectToRoute('remove_players', [
+                        'type' => $type
+                    ]);
+                }else{
+                    $this->addFlash('message', 'Something went wrong!');
+                    return $this->redirectToRoute('remove_players', [
+                        'type' => $type
+                    ]);
+                }
+            }catch (\Exception $exception){
+                $this->addFlash('message', $exception->getMessage());
                 return $this->redirectToRoute('remove_players', [
                     'type' => $type
                 ]);
             }
+
         }
 
         return $this->render('player/remove_player.html.twig', [

@@ -46,12 +46,14 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        $usersSnookerRank = $this->userService->getSnookerRank();
-        $usersDartsRank = $this->userService->getDartsRank();
+        $usersSnookerRank = $this->userService->getRank('snooker', 5);
+        $usersDartsRank = $this->userService->getRank('darts', 5);
         $playersSnookerRank = $this->playerService->getRank('snooker');
         $playersDartsRank = $this->playerService->getRank('darts');
         $nextSnookerTournament = $this->tournamentService->getNext('snooker');
         $nextDartsTournament = $this->tournamentService->getNext('darts');
+        $runningSnookerTournament = $this->tournamentService->getCurrentTournament('snooker');
+        $runningDartsTournament = $this->tournamentService->getCurrentTournament('darts');
 
         return $this->render("home/index.html.twig", [
             'usersSnookerRank' => $usersSnookerRank,
@@ -59,7 +61,9 @@ class HomeController extends Controller
             'playersSnookerRank' => $playersSnookerRank,
             'playersDartsRank' => $playersDartsRank,
             'snookerTournament' => $nextSnookerTournament,
-            'dartsTournament' => $nextDartsTournament
+            'dartsTournament' => $nextDartsTournament,
+            'runningSnookerTournament' => $runningSnookerTournament,
+            'runningDartsTournament' => $runningDartsTournament
         ]);
     }
 }

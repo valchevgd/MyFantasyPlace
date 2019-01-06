@@ -2,7 +2,7 @@
 
 {% block main %}
     <div class="container body-content col-sm-8"
-         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white; text-align: center">
         {% for msg in app.session.flashBag.get('message') %}
             <div class="alert alert-secondary ">
                 {{ msg }}

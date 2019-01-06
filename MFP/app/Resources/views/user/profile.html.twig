@@ -31,7 +31,11 @@
                                        name="user[image]">
                             </div>
                             {{ form_row(form._token) }}
-                            <button type="submit" class="btn btn-secondary">Update Profile</button>
+                            <div>
+                                <button type="submit" class="btn btn-secondary">Update Profile</button>
+                                <a href="{{ path('change_password') }}" class="btn btn-outline-light">Change Password</a>
+                                <a href="{{ path('user_delete') }}" class="btn btn-danger">Delete account</a>
+                            </div>
                         </form>
                     </div>
                 {% endif %}

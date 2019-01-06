@@ -202,7 +202,7 @@ class PlayersController extends Controller
     {
         $user = $this->getUser();
 
-        $allPlayers = $this->playersService->getAllPlayers($type);
+        $allPlayers = $this->playersService->getAllPlayers($type, 'value');
         $typeOfPlayers = 'get'.ucfirst($type).'Players';
 
         return $this->render('player/view_players.html.twig', [

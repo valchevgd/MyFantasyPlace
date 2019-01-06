@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content"
+         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        <div class="row" style="padding: 10px; margin: 10px">
+            <div style="margin: 10px">
+                <a href="{{ path('standing', {'type':'snooker'}) }}"
+                   class="btn btn-outline-light">Snooker Standing</a>
+            </div>
+            <div style="margin: 10px">
+                <a href="{{ path('standing', {'type':'darts'}) }}"
+                   class="btn btn-outline-light">Darts Standing</a>
+            </div>
+        </div>
+        <div class="container body-content">
+            <div>
+                <h4>{{ type|capitalize }} Standing</h4>
+            </div>
+            <table border="1" style="border: white; text-align: center">
+                <tr>
+                    <th colspan="2">Username</th>
+                    <th>Fantasy Points</th>
+                </tr>
+                {% for user in userRank %}
+                    <tr>
+                        <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
+                        </td>
+                        <td><a href="{{ path('profile', {'id':user.id}) }}"
+                               style="color: white">{{ user.username }}</a></td>
+                        {% if type == "snooker" %}
+                            <td>{{ user.snookerSeasonPoints }}</td>
+                        {% else %}
+                            <td>{{ user.dartsSeasonPoints }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

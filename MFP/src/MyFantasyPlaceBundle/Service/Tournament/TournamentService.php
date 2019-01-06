@@ -98,7 +98,8 @@ class TournamentService implements TournamentServiceInterface
         }
 
         $typeOfPointsToReset = 'u.'.$type.'TournamentPoints';
-        $this->userRepository->restartUsersForTournament($typeOfPointsToReset);
+        $typeOfTransfer = 'u.'.$type.'Transfer';
+        $this->userRepository->restartUsersForTournament($typeOfPointsToReset, $typeOfTransfer);
 
         $this->$repository->restartPlayersForTournament();
 

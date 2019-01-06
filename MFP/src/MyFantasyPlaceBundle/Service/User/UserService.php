@@ -9,6 +9,7 @@
 namespace MyFantasyPlaceBundle\Service\User;
 
 
+use MyFantasyPlaceBundle\DTO\ChangePasswordDTO;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Repository\UserRepository;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -71,16 +72,12 @@ class UserService implements UserServiceInterface
 
     }
 
-    public function getSnookerRank()
-    {
-        $rank = $this->userRepository->findBy(['isAdmin' => false],['snookerSeasonPoints' => 'desc'], 5);
 
-        return $rank;
-    }
-
-    public function getDartsRank()
+    public function getRank(string $type, int $limit = null)
     {
-        $rank = $this->userRepository->findBy(['isAdmin' => false],['dartsSeasonPoints' => 'desc'], 5);
+        $typeRank = $type.'SeasonPoints';
+
+        $rank = $this->userRepository->findBy(['isAdmin' => false],[$typeRank => 'desc'], $limit);
 
         return $rank;
     }
@@ -112,5 +109,24 @@ class UserService implements UserServiceInterface
         $currentUser->setEmail($email);
 
         return $currentUser;
+    }
+
+    public function changePassword(User $user, ChangePasswordDTO $newPassword)
+    {
+        $password = $this->passwordEncoder->encodePassword($user, $newPassword->getNewPassword());
+
+        $user->setPassword($password);
+
+        return $this->userRepository->updateUser($user);
+    }
+
+    public function deleteUser(User $user, string $password)
+    {
+        if($this->passwordEncoder->isPasswordValid($user, $password)){
+            return $this->userRepository->removeUser($user);
+        }else{
+            throw new Exception('Wrong password!');
+        }
+
     }
 }

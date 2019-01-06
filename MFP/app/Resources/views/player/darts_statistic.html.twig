@@ -1,0 +1,58 @@
+{% extends "statistic.html.twig" %}
+
+{% block stats %}
+    <div class="container body-content">
+        <table border="1" style="border: white; text-align: center">
+            <tr>
+                <th>Name</th>
+                {% if app.user %}
+                    <th><a href="{{ path('statistic', {'type':'darts', 'order':'value'}) }}"
+                           style="color: white">Value</a></th>
+                    <th><a
+                                href="{{ path('statistic', {'type':'darts', 'order':'seasonFantasyPoints'}) }}"
+                                style="color: white">Season Fantasy Points</a></th>
+                {% endif %}
+                <th><a href="{{ path('statistic', {'type':'darts', 'order':'seasonMaximums'}) }}"
+                       style="color: white">Season 180's</a></th>
+                <th><a
+                            href="{{ path('statistic', {'type':'darts', 'order':'seasonOverOneHundredAndForty'}) }}"
+                            style="color: white">Season 140+</a></th>
+                <th><a
+                            href="{{ path('statistic', {'type':'darts', 'order':'seasonOverHundred'}) }}"
+                            style="color: white">Season 100+</a></th>
+                {% if app.user %}
+                    <th><a
+                                href="{{ path('statistic', {'type':'darts', 'order':'tournamentFantasyPoints'}) }}"
+                                style="color: white">Tournament Fantasy Points</a></th>
+                {% endif %}
+                <th><a
+                            href="{{ path('statistic', {'type':'darts', 'order':'tournamentMaximums'}) }}"
+                            style="color: white">Tournament 180's</a></th>
+                <th><a
+                            href="{{ path('statistic', {'type':'darts', 'order':'tournamentOverOneHundredAndForty'}) }}"
+                            style="color: white">Tournament 140+</a></th>
+                <th><a
+                            href="{{ path('statistic', {'type':'darts', 'order':'tournamentOverHundred'}) }}"
+                            style="color: white">Tournament 100+</a></th>
+            </tr>
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    {% if app.user %}
+                        <td>{{ player.value }}</td>
+                        <td>{{ player.seasonFantasyPoints }}</td>
+                    {% endif %}
+                    <td>{{ player.seasonMaximums }}</td>
+                    <td>{{ player.seasonOverOneHundredAndForty }}</td>
+                    <td>{{ player.seasonOverHundred }}</td>
+                    {% if app.user %}
+                        <td>{{ player.tournamentFantasyPoints }}</td>
+                    {% endif %}
+                    <td>{{ player.tournamentMaximums }}</td>
+                    <td>{{ player.tournamentOverOneHundredAndForty }}</td>
+                    <td>{{ player.tournamentOverHundred }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
