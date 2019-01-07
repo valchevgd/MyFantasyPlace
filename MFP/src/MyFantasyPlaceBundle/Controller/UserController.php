@@ -16,8 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class UserController extends Controller
 {
@@ -57,7 +56,6 @@ class UserController extends Controller
 
         if ($form->isSubmitted() and $form->isValid()) {
 
-
             try {
                 $this->userService->register($user);
             } catch (Exception $exception) {
@@ -83,17 +81,14 @@ class UserController extends Controller
      */
     public function viewProfileAction(int $id, Request $request)
     {
-        /** @var User $viewUser */
-        $viewUser = $this->userService->getViewUser($id);
-
-        /** @var User $currentUser */
-        $currentUser = $this->getUser();
+        /** @var User $user */
+        $user = $this->userService->getViewUser($id);
 
         $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
 
-        $snookerPlayers = $this->userPlayerService->findUsersPlayers($viewUser->getSnookerPlayers()->toArray());
-        $dartsPlayers = $this->userPlayerService->findUsersPlayers($viewUser->getDartsPlayers()->toArray());
+        $snookerPlayers = $this->userPlayerService->findUsersPlayers($user->getSnookerPlayers()->toArray());
+        $dartsPlayers = $this->userPlayerService->findUsersPlayers($user->getDartsPlayers()->toArray());
 
         if ($form->isSubmitted() and $form->isValid()) {
 
@@ -102,9 +97,9 @@ class UserController extends Controller
             $username = $form->get('username')->getData();
             $email = $form->get('email')->getData();
 
-            $currentUser = $this->userService->prepareUser($currentUser, $username, $email, $file);
+            $user = $this->userService->prepareUser($user, $username, $email, $file);
 
-            if ($this->userService->update($currentUser)) {
+            if ($this->userService->update($user)) {
                 return $this->redirectToRoute('profile', [
                     'id' => $id
                 ]);
@@ -114,7 +109,7 @@ class UserController extends Controller
         return $this->render('user/profile.html.twig', [
             'snookerPlayers' => $snookerPlayers,
             'dartsPlayers' => $dartsPlayers,
-            'viewUser' => $viewUser,
+            'viewUser' => $user,
             'form' => $form->createView()
 
         ]);
@@ -123,7 +118,7 @@ class UserController extends Controller
     /**
      * @Route("/user_change_password", name="change_password")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @return Response
      */
@@ -154,13 +149,11 @@ class UserController extends Controller
     /**
      * @Route("/user_delete", name="user_delete")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
-     * @param TokenStorageInterface $tokenStorage
-     * @param SessionInterface $session
      * @return Response
      */
-    public function deleteAccountAction(Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session)
+    public function deleteAccountAction(Request $request)
     {
         $form = $this->createForm(DeleteAccountType::class);
         $form->handleRequest($request);
@@ -172,8 +165,6 @@ class UserController extends Controller
 
             try{
                 $this->userService->deleteUser($user, $password);
-                $tokenStorage->setToken(null);
-                $session->invalidate();
                 return $this->redirectToRoute('index');
             }catch (Exception $exception){
                 $this->addFlash('message', $exception->getMessage());

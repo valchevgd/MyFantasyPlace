@@ -12,6 +12,8 @@ namespace MyFantasyPlaceBundle\Service\User;
 use MyFantasyPlaceBundle\DTO\ChangePasswordDTO;
 use MyFantasyPlaceBundle\Entity\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 interface UserServiceInterface
 {
@@ -27,5 +29,5 @@ interface UserServiceInterface
 
     public function changePassword(User $user,ChangePasswordDTO $newPassword);
 
-    public function deleteUser(User $user,string $password);
+    public function deleteUser(User $user,string $password, TokenStorageInterface $tokenStorage, SessionInterface $session);
 }

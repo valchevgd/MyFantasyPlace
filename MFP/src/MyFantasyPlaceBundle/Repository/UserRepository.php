@@ -23,6 +23,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->persist($user);
         $this->_em->flush();
+
+        return true;
     }
 
     public function updateUser(User $user)
@@ -43,6 +45,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 
     public function restartUsersForSeason($typeOfPointsToReset)
@@ -54,6 +58,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 
     public function removeUser($user)
@@ -63,4 +69,5 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
+
 }

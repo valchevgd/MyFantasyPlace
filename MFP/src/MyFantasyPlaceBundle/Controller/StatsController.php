@@ -47,7 +47,7 @@ class StatsController extends Controller
 
         $players = $this->playersService->getAllPlayers($type, $order);
 
-        return $this->render("player/".$type."_statistic.html.twig", [
+        return $this->render("statistic/".$type."_statistic.html.twig", [
             'type' => $type,
             'order' => $order,
             'players' => $players

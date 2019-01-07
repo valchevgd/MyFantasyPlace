@@ -17,7 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserService implements UserServiceInterface
 {
@@ -77,7 +78,7 @@ class UserService implements UserServiceInterface
     {
         $typeRank = $type.'SeasonPoints';
 
-        $rank = $this->userRepository->findBy(['isAdmin' => false],[$typeRank => 'desc'], $limit);
+        $rank = $this->userRepository->findBy([],[$typeRank => 'desc'], $limit);
 
         return $rank;
     }
@@ -120,10 +121,15 @@ class UserService implements UserServiceInterface
         return $this->userRepository->updateUser($user);
     }
 
-    public function deleteUser(User $user, string $password)
+    public function deleteUser(User $user, string $password, TokenStorageInterface $tokenStorage, SessionInterface $session)
     {
         if($this->passwordEncoder->isPasswordValid($user, $password)){
-            return $this->userRepository->removeUser($user);
+            if ($this->userRepository->removeUser($user)){
+                $tokenStorage->setToken(null);
+                $session->invalidate();
+
+                return true;
+            }
         }else{
             throw new Exception('Wrong password!');
         }

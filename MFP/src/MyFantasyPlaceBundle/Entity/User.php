@@ -4,6 +4,8 @@ namespace MyFantasyPlaceBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -121,12 +123,6 @@ class User implements UserInterface
      */
     private $fantasyTokens = 0;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_admin", type="boolean")
-     */
-    private $isAdmin = false;
 
     /**
      * @var ArrayCollection|DartsPlayer[]
@@ -163,10 +159,21 @@ class User implements UserInterface
      */
     private $image = null;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="MyFantasyPlaceBundle\Entity\Role")
+     * @JoinTable(name="users_roles",
+     *     joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->dartsPlayers = new ArrayCollection();
         $this->snookerPlayers = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function getImage()
@@ -493,29 +500,6 @@ class User implements UserInterface
         return $this->fantasyTokens;
     }
 
-    /**
-     * Set isAdmin
-     *
-     * @param boolean $isAdmin
-     *
-     * @return User
-     */
-    public function setIsAdmin($isAdmin)
-    {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get isAdmin
-     *
-     * @return bool
-     */
-    public function getIsAdmin()
-    {
-        return $this->isAdmin;
-    }
 
     /**
      * @return bool
@@ -568,7 +552,12 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        $stringRoles = [];
+        foreach ($this->roles as $role){
+            /** @var $role Role */
+            $stringRoles[] = $role->getRole();
+        }
+        return $stringRoles;
     }
 
     /**

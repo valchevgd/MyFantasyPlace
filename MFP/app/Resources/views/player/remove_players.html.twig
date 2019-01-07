@@ -1,34 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <div class="container body-content col-sm-8"
-         style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white; text-align: center">
-        {% for msg in app.session.flashBag.get('message') %}
-            <div class="alert alert-secondary ">
-                {{ msg }}
-            </div>
-        {% endfor %}
-        <h3 style="text-align: center">Select Player</h3>
-        <table class="table">
-            <tr>
-                <th style="text-align: center">Player Name</th>
-                <th style="text-align: center">Player Value</th>
-                <th style="text-align: center">Player Season Fantasy Points</th>
-                <th style="text-align: center">Player Level</th>
-                <th style="text-align: center">Options</th>
-            </tr>
-            {% for player in players %}
-                <tr>
-                    <td style="text-align: center">{{ player.name }}</td>
-                    <td style="text-align: center">{{ player.value }}</td>
-                    <td style="text-align: center">{{ player.seasonFantasyPoints }}</td>
-                    <td style="text-align: center">{{ player.level }}</td>
-                    <td style="text-align: center"><a
-                                href="{{ path('remove_player', {'type':type, 'playerId':player.id}) }}"
-                                class="btn btn-danger" role="button" aria-disabled="false">Remove</a></td>
-                </tr>
-            {% endfor %}
-        </table>
+    <div class="container body-content col-sm-6" style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form(form) }}
     </div>
 {% endblock %}
 

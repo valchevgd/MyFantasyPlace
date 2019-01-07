@@ -54,6 +54,8 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 
     public function restartPlayersForSeason()
@@ -67,5 +69,7 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 }

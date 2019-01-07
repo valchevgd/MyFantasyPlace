@@ -41,9 +41,30 @@ class UserPlayerController extends Controller
     }
 
     /**
+     * @Route("/view_players/{type}", name="view_players")
+     *
+     * @Security("has_role('ROLE_USER')")
+     * @param string $type
+     * @return Response
+     */
+    public function showPlayersToBuyAction(string $type)
+    {
+        $user = $this->getUser();
+
+        $allPlayers = $this->playersService->getAllPlayers($type, 'value');
+        $typeOfPlayers = 'get'.ucfirst($type).'Players';
+
+        return $this->render('user_player/view_players_to_bye.html.twig', [
+            'type' => $type,
+            'players' => $allPlayers,
+            'userPlayers' => $this->userPlayerService->findUsersPlayers($user->$typeOfPlayers()->toArray())
+        ]);
+    }
+
+    /**
      * @Route("/buy_player/{type}/{playerId}", name="buy_player")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param string $type
      * @param int $playerId ;
      * @param Request $request
@@ -90,7 +111,7 @@ class UserPlayerController extends Controller
             }
         }
 
-        return $this->render('player/buy_player.html.twig', [
+        return $this->render('user_player/buy_player.html.twig', [
             'player' => $player,
             'form' => $form->createView(),
         ]);
@@ -99,7 +120,7 @@ class UserPlayerController extends Controller
     /**
      * @Route("/upgrade_players/{type}", name="upgrade_players")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param string $type
      * @return Response
@@ -127,24 +148,19 @@ class UserPlayerController extends Controller
             $playerId = $form->getData()['id'];
             try {
                 if($this->userPlayerService->upgradePlayer($user, $playerId, $type, $tokens)){
-                    return $this->redirectToRoute('upgrade_players', [
-                        'type' => $type,
-                        'pagination' => $pagination,
-                        'form' => $form->createView()
-                    ]);
+                    $this->addFlash('message', 'Upgrade successful!');
                 }
             } catch (\Exception $exception) {
                 $this->addFlash('message', $exception->getMessage());
-                return $this->redirectToRoute('upgrade_players', [
-                    'type' => $type,
-                    'pagination' => $pagination,
-                    'form' => $form->createView()
-                ]);
             }
+            return $this->redirectToRoute('upgrade_players', [
+                'type' => $type,
+                'pagination' => $pagination,
+                'form' => $form->createView()
+            ]);
         }
 
-
-        return $this->render('player/upgrade_players.html.twig', [
+        return $this->render('user_player/upgrade_players.html.twig', [
             'type' => $type,
             'pagination' => $pagination,
             'form' => $form->createView()
@@ -155,7 +171,7 @@ class UserPlayerController extends Controller
     /**
      * @Route("/remove_players/{type}", name="remove_players")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param string $type
      * @return Response
      */
@@ -166,7 +182,7 @@ class UserPlayerController extends Controller
 
         $players = $this->userPlayerService->getPlayersToView($user->getId(), $type);
 
-        return $this->render('player/remove_players.html.twig',[
+        return $this->render('user_player/view_players_to_remove.html.twig',[
             'type' => $type,
             'players' => $players
         ]);
@@ -175,7 +191,7 @@ class UserPlayerController extends Controller
     /**
      * @Route("remove_player/{type}/{playerId}", name="remove_player")
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @param Request $request
      * @param string $type
      * @param int $playerId
@@ -193,25 +209,20 @@ class UserPlayerController extends Controller
             try{
                 if($this->userPlayerService->remove($user, $type, $playerId, $player['value'])){
                     $this->addFlash('message', 'You successfully remove ' . $player['name'] . ' from your players!');
-                    return $this->redirectToRoute('remove_players', [
-                        'type' => $type
-                    ]);
                 }else{
                     $this->addFlash('message', 'Something went wrong!');
-                    return $this->redirectToRoute('remove_players', [
-                        'type' => $type
-                    ]);
                 }
             }catch (\Exception $exception){
                 $this->addFlash('message', $exception->getMessage());
-                return $this->redirectToRoute('remove_players', [
-                    'type' => $type
-                ]);
+
             }
 
+            return $this->redirectToRoute('remove_players', [
+                'type' => $type
+            ]);
         }
 
-        return $this->render('player/remove_player.html.twig', [
+        return $this->render('user_player/remove_player.html.twig', [
             'type' => $type,
             'player' => $player,
         ]);

@@ -5,6 +5,7 @@ namespace MyFantasyPlaceBundle\Service\Players;
 
 use Exception;
 use MyFantasyPlaceBundle\DTO\DartsPlayerToUpdateDTO;
+use MyFantasyPlaceBundle\DTO\PlayersDTO;
 use MyFantasyPlaceBundle\DTO\SnookerPlayerToUpdateDTO;
 use MyFantasyPlaceBundle\Entity\DartsPlayer;
 use MyFantasyPlaceBundle\Entity\SnookerPlayer;
@@ -76,16 +77,22 @@ class PlayersService implements PlayersServiceInterface
     {
         $repository = $type . 'PlayerRepository';
 
-        foreach ($players as $player) {
+        /** @var PlayersDTO $players */
+        $playersAsArray = $players->getPlayers()->toArray();
 
+        foreach ($playersAsArray as $player) {
             $this->$repository->remove($player);
-
         }
 
-        $this->$repository->restartPlayersForSeason();
+       if($this->$repository->restartPlayersForSeason()){
+           $typeOfPointsToReset = 'u.' . $type . 'SeasonPoints';
+           if($this->userRepository->restartUsersForSeason($typeOfPointsToReset)){
+               return true;
+           }
+       }
 
-        $typeOfPointsToReset = 'u.' . $type . 'SeasonPoints';
-        $this->userRepository->restartUsersForSeason($typeOfPointsToReset);
+       return false;
+
     }
 
     public function updateDartsPlayer(DartsPlayerToUpdateDTO $formData)
@@ -229,7 +236,7 @@ class PlayersService implements PlayersServiceInterface
     public function getPlayerToUpdate($type)
     {
         $repository = $type . 'PlayerRepository';
-        $player = $this->$repository->findOneBy(['newValue' => false]);
+        $player = $this->$repository->findOneBy(['newValue' => false],['value' => 'desc']);
 
         return $player;
     }

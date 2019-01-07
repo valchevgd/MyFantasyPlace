@@ -73,7 +73,9 @@ class TournamentService implements TournamentServiceInterface
 
         $repository = $type . 'PlayerRepository';
 
-        foreach ($players as $player) {
+        $playersToArray = $players->getPlayers()->toArray();
+
+        foreach ($playersToArray as $player) {
             $player->setStatus('running');
             $this->$repository->update($player);
         }

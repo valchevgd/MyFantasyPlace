@@ -55,6 +55,8 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 
     public function restartPlayersForSeason()
@@ -70,6 +72,8 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         $qb->getQuery()->execute();
+
+        return true;
     }
 
 
