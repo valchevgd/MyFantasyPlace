@@ -30,4 +30,10 @@ interface UserServiceInterface
     public function changePassword(User $user,ChangePasswordDTO $newPassword);
 
     public function deleteUser(User $user,string $password, TokenStorageInterface $tokenStorage, SessionInterface $session);
+
+    public function restartUsersForSeason($typeOfPointsToReset);
+
+    public function getUser(int $id);
+
+    public function restartUsersForTournament(string $type);
 }

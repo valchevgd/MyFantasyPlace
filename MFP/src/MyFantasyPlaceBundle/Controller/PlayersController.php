@@ -4,13 +4,13 @@ namespace MyFantasyPlaceBundle\Controller;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use MyFantasyPlaceBundle\DTO\PlayersDTO;
-use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\AddPlayerType;
 use MyFantasyPlaceBundle\Form\UpdateValueType;
 use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
 use MyFantasyPlaceBundle\Service\UserPlayer\UserPlayerServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,7 +67,7 @@ class PlayersController extends Controller
                 $this->addFlash('message', $player->getName() . ' is already added!');
             }
 
-            return $this->redirectToRoute('add_player', [
+            return $this->redirectToRoute('admin_add_player', [
                 'type' => $type
             ]);
         }
@@ -94,16 +94,14 @@ class PlayersController extends Controller
 
         if ($form->isSubmitted() and $form->isValid()) {
 
+
             if ($this->playersService->removePlayers($players, $type)) {
                 $this->addFlash('message', 'Players are successfully removed, now is time to add new...');
             } else {
                 $this->addFlash('message', 'something went wrong');
-                return $this->redirectToRoute('admin_remove_players', [
-                    'form' => $form->createView()
-                ]);
             }
 
-            return $this->redirectToRoute('add_player', [
+            return $this->redirectToRoute('admin_add_player', [
                 'type' => $type
             ]);
         }
@@ -157,7 +155,7 @@ class PlayersController extends Controller
                 $this->addFlash('message', $exception->getMessage());
             }
 
-            return $this->redirectToRoute('update_players_results', [
+            return $this->redirectToRoute('admin_update_players_results', [
                 'type' => $type
             ]);
         }
@@ -190,7 +188,7 @@ class PlayersController extends Controller
             try {
                 if ($this->playersService->updateValue($player, $type)) {
                     $this->addFlash('message', $player->getName() . '`s value is successfully update!');
-                }else{
+                } else {
                     $this->addFlash('message', 'Unsuccessfully update! Please try again.');
                 }
                 return $this->redirectToRoute('update_players_value', [
@@ -198,7 +196,7 @@ class PlayersController extends Controller
                 ]);
             } catch (\Exception $exception) {
                 $this->addFlash('message', $exception->getMessage());
-                return $this->redirectToRoute('update_players_results', [
+                return $this->redirectToRoute('admin_update_players_results', [
                     'type' => $type
                 ]);
             }

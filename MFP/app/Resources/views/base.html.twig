@@ -31,6 +31,8 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
+                {% if app.user %}<small class="form-text">Hello, <a href="{{ path('profile', {'id':app.user.id}) }}"
+                                                                    style="color: black">{{ app.user.username }}</a>!</small>{% endif %}
                 <div class="navbar-collapse collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item" style="font-size: large">

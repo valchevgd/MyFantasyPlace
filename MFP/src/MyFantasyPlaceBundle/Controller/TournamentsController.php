@@ -134,7 +134,7 @@ class TournamentsController extends Controller
                 }
             }catch (Exception $exception){
                 $this->addFlash('message', $exception->getMessage());
-                return $this->redirectToRoute('update_players_results', [
+                return $this->redirectToRoute('admin_update_players_results', [
                     'type' => $type
                 ]);
             }

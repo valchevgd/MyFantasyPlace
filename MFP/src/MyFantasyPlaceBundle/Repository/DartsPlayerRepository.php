@@ -31,6 +31,8 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->remove($player);
         $this->_em->flush();
+
+        return true;
     }
 
     public function update(DartsPlayer $player)

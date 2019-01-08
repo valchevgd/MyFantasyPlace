@@ -26,4 +26,10 @@ interface PlayersServiceInterface
     public function getPlayerToUpdate($type);
 
     public function updateValue($player, string $type);
+
+    public function updateStatus($player, string $type);
+
+    public function getOneBy(array $array, string $type);
+
+    public function restartPlayersForTournament(string $type);
 }

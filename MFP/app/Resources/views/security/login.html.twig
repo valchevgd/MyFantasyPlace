@@ -12,7 +12,10 @@
                     <input class="form-control" type="password" placeholder="Password" name="_password">
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                <input class="btn btn-outline-light" type="submit" value="Login">
+                <div style="text-align: end">
+                    <a href="{{ path('index') }}" class="btn btn-danger" role="button">Cancel</a>
+                    <input class="btn btn-outline-light" type="submit" value="Login">
+                </div>
             </form>
         </div>
     </div>

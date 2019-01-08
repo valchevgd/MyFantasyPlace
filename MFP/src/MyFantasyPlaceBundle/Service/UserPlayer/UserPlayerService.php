@@ -6,8 +6,8 @@ namespace MyFantasyPlaceBundle\Service\UserPlayer;
 
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Repository\UserDartsPlayerRepository;
-use MyFantasyPlaceBundle\Repository\UserRepository;
 use MyFantasyPlaceBundle\Repository\UserSnookerPlayerRepository;
+use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class UserPlayerService implements UserPlayerServiceInterface
@@ -19,9 +19,9 @@ class UserPlayerService implements UserPlayerServiceInterface
     private $userDartsPlayerRepository;
 
     /**
-     * @var UserRepository
+     * @var UserServiceInterface
      */
-    private $userRepository;
+    private $userService;
 
     /**
      * @var UserSnookerPlayerRepository
@@ -31,15 +31,15 @@ class UserPlayerService implements UserPlayerServiceInterface
     /**
      * UserPlayerService constructor.
      * @param UserDartsPlayerRepository $userDartsPlayerRepository
-     * @param UserRepository $userRepository
+     * @param UserServiceInterface $userService
      * @param UserSnookerPlayerRepository $userSnookerPlayerRepository
      */
     public function __construct(UserDartsPlayerRepository $userDartsPlayerRepository,
-                                UserRepository $userRepository,
+                                UserServiceInterface $userService,
                                 UserSnookerPlayerRepository $userSnookerPlayerRepository)
     {
         $this->userDartsPlayerRepository = $userDartsPlayerRepository;
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
         $this->userSnookerPlayerRepository = $userSnookerPlayerRepository;
     }
 
@@ -54,7 +54,7 @@ class UserPlayerService implements UserPlayerServiceInterface
 
             $user->$setter($user->$getter() - $playerValue);
 
-            $this->userRepository->updateUser($user);
+            $this->userService->update($user);
             return true;
         }
 
@@ -124,7 +124,7 @@ class UserPlayerService implements UserPlayerServiceInterface
         if($this->$repository->update($relation)){
             $user->setFantasyTokens($user->getFantasyTokens() - $startingTokens);
 
-            $this->userRepository->updateUser($user);
+            $this->userService->update($user);
 
             return true;
         }else{
@@ -159,11 +159,17 @@ class UserPlayerService implements UserPlayerServiceInterface
             $typeOfTransfer = 'set'.ucfirst($type).'Transfer';
             $user->$typeOfTransfer(false);
 
-            $this->userRepository->updateUser($user);
+            $this->userService->update($user);
             return true;
         }
 
         return false;
     }
 
+    public function getUsers(int $id, string $type)
+    {
+        $repository = 'user'.ucfirst($type).'PlayerRepository';
+
+        return $this->$repository->findUsers($id);
+    }
 }

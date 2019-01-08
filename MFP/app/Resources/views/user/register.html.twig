@@ -29,7 +29,10 @@
                     <input class="form-control" type="text" placeholder="Full Name" name="user[fullName]">
                 </div>
                 {{ form_row(form._token) }}
-                <input class="btn btn-outline-light" type="submit" value="Register">
+                <div style="text-align: end">
+                    <a href="{{ path('index') }}" class="btn btn-danger" role="button">Cancel</a>
+                    <input class="btn btn-outline-light" type="submit" value="Register">
+                </div>
             </form>
         </div>
     </div>

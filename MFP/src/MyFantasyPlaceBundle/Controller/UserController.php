@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 class UserController extends Controller
@@ -151,9 +153,11 @@ class UserController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      * @param Request $request
+     * @param TokenStorageInterface $tokenStorage
+     * @param SessionInterface $session
      * @return Response
      */
-    public function deleteAccountAction(Request $request)
+    public function deleteAccountAction(Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session)
     {
         $form = $this->createForm(DeleteAccountType::class);
         $form->handleRequest($request);
@@ -164,7 +168,7 @@ class UserController extends Controller
             $password = $form->getData()['password'];
 
             try{
-                $this->userService->deleteUser($user, $password);
+                $this->userService->deleteUser($user, $password, $tokenStorage, $session);
                 return $this->redirectToRoute('index');
             }catch (Exception $exception){
                 $this->addFlash('message', $exception->getMessage());

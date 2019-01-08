@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * UserService: valchevgd
- * Date: 12/21/2018
- * Time: 12:48 PM
- */
 
 namespace MyFantasyPlaceBundle\Service\User;
 
 
 use MyFantasyPlaceBundle\DTO\ChangePasswordDTO;
+use MyFantasyPlaceBundle\Entity\Role;
 use MyFantasyPlaceBundle\Entity\User;
+use MyFantasyPlaceBundle\Repository\RoleRepository;
 use MyFantasyPlaceBundle\Repository\UserRepository;
+use MyFantasyPlaceBundle\Service\Role\RoleServiceInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -34,20 +31,27 @@ class UserService implements UserServiceInterface
      */
     protected $container;
 
+    /**
+     * @var RoleServiceInterface
+     */
+    private $roleService;
 
     /**
      * UserService constructor.
      * @param UserRepository $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param ContainerInterface|null $container
+     * @param ContainerInterface $container
+     * @param RoleServiceInterface $roleService
      */
     public function __construct(UserRepository $userRepository,
                                 UserPasswordEncoderInterface $passwordEncoder,
-                                ContainerInterface $container = null)
+                                ContainerInterface $container,
+                                RoleServiceInterface $roleService)
     {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->container = $container;
+        $this->roleService = $roleService;
     }
 
 
@@ -68,6 +72,10 @@ class UserService implements UserServiceInterface
         $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
 
         $user->setPassword($password);
+
+        /** @var Role $role */
+        $role = $this->roleService->getRole('ROLE_USER');
+        $user->addRole($role);
 
         $this->userRepository->createUser($user);
 
@@ -127,12 +135,29 @@ class UserService implements UserServiceInterface
             if ($this->userRepository->removeUser($user)){
                 $tokenStorage->setToken(null);
                 $session->invalidate();
-
-                return true;
             }
         }else{
             throw new Exception('Wrong password!');
         }
 
+        return true;
+    }
+
+    public function restartUsersForSeason($typeOfPointsToReset)
+    {
+        return $this->userRepository->restartUsersForSeason($typeOfPointsToReset);
+    }
+
+    public function getUser(int $id)
+    {
+        return $this->userRepository->findOneBy(['id' => $id]);
+    }
+
+    public function restartUsersForTournament($type)
+    {
+        $typeOfPointsToReset = 'u.'.$type.'TournamentPoints';
+        $typeOfTransfer = 'u.'.$type.'Transfer';
+
+        return $this->userRepository->restartUsersForTournament($typeOfPointsToReset, $typeOfTransfer);
     }
 }

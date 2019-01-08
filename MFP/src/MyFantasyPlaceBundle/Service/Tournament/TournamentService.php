@@ -7,6 +7,8 @@ use MyFantasyPlaceBundle\Repository\DartsPlayerRepository;
 use MyFantasyPlaceBundle\Repository\SnookerPlayerRepository;
 use MyFantasyPlaceBundle\Repository\TournamentRepository;
 use MyFantasyPlaceBundle\Repository\UserRepository;
+use MyFantasyPlaceBundle\Service\Players\PlayersServiceInterface;
+use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class TournamentService implements TournamentServiceInterface
@@ -15,36 +17,28 @@ class TournamentService implements TournamentServiceInterface
     private $tournamentRepository;
 
     /**
-     * @var DartsPlayerRepository
+     * @var PlayersServiceInterface
      */
-    private $dartsPlayerRepository;
+    private $playerService;
 
     /**
-     * @var SnookerPlayerRepository
+     * @var UserServiceInterface
      */
-    private $snookerPlayerRepository;
-
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private $userService;
 
     /**
      * TournamentService constructor.
      * @param TournamentRepository $tournamentRepository
-     * @param DartsPlayerRepository $dartsPlayerRepository
-     * @param SnookerPlayerRepository $snookerPlayerRepository
-     * @param UserRepository $userRepository
+     * @param PlayersServiceInterface $playerService
+     * @param UserServiceInterface $userService
      */
     public function __construct(TournamentRepository $tournamentRepository,
-                                DartsPlayerRepository $dartsPlayerRepository,
-                                SnookerPlayerRepository $snookerPlayerRepository,
-                                UserRepository $userRepository)
+                                PlayersServiceInterface $playerService,
+                                UserServiceInterface $userService)
     {
         $this->tournamentRepository = $tournamentRepository;
-        $this->dartsPlayerRepository = $dartsPlayerRepository;
-        $this->snookerPlayerRepository = $snookerPlayerRepository;
-        $this->userRepository = $userRepository;
+        $this->playerService = $playerService;
+        $this->userService = $userService;
     }
 
 
@@ -71,13 +65,12 @@ class TournamentService implements TournamentServiceInterface
         $nextTournament->setStatus('running');
         $this->tournamentRepository->update($nextTournament);
 
-        $repository = $type . 'PlayerRepository';
-
         $playersToArray = $players->getPlayers()->toArray();
 
         foreach ($playersToArray as $player) {
-            $player->setStatus('running');
-            $this->$repository->update($player);
+            if(!$this->playerService->updateStatus($player, $type)){
+                break;
+            }
         }
 
         return true;
@@ -92,18 +85,16 @@ class TournamentService implements TournamentServiceInterface
     {
         $repository = $type . 'PlayerRepository';
 
-        $playerWithStatus = $this->$repository->findOneBy(['status' => 'running']);
-        $playerWithoutNewValue = $this->$repository->findOneBy(['newValue' => false]);
+        $playerWithStatus = $this->playerService->getOneBy(['status' => 'running'], $type);
+        $playerWithoutNewValue = $this->playerService->getOneBy(['newValue' => false], $type);
 
         if ($playerWithStatus or $playerWithoutNewValue) {
             throw new Exception('\'There are still players with status "running" OR players with no updated value! Please update players first!');
         }
 
-        $typeOfPointsToReset = 'u.'.$type.'TournamentPoints';
-        $typeOfTransfer = 'u.'.$type.'Transfer';
-        $this->userRepository->restartUsersForTournament($typeOfPointsToReset, $typeOfTransfer);
+        $this->userService->restartUsersForTournament($type);
 
-        $this->$repository->restartPlayersForTournament();
+        $this->playerService->restartPlayersForTournament($type);
 
         $tournament->setStatus('finished');
 

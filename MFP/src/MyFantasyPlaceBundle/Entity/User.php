@@ -534,6 +534,16 @@ class User implements UserInterface
     }
 
 
+    /**
+     * @param \MyFantasyPlaceBundle\Entity\Role $role
+     * @return User
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
 
 
     /**
@@ -558,6 +568,11 @@ class User implements UserInterface
             $stringRoles[] = $role->getRole();
         }
         return $stringRoles;
+    }
+
+    public function isAdmin()
+    {
+        return in_array("ROLE_ADMIN", $this->getRoles());
     }
 
     /**

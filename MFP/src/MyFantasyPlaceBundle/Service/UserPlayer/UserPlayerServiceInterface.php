@@ -19,4 +19,6 @@ interface UserPlayerServiceInterface
 
         public function remove(User $user,string $type,int $playerId, float $playerValue);
 
+        public function getUsers(int $id, string $type);
+
 }
