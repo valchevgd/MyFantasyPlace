@@ -12,6 +12,7 @@ use MyFantasyPlaceBundle\Entity\SnookerPlayer;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Repository\DartsPlayerRepository;
 use MyFantasyPlaceBundle\Repository\SnookerPlayerRepository;
+use MyFantasyPlaceBundle\Repository\TournamentRepository;
 use MyFantasyPlaceBundle\Service\Tournament\TournamentServiceInterface;
 use MyFantasyPlaceBundle\Service\User\UserServiceInterface;
 use MyFantasyPlaceBundle\Service\UserPlayer\UserPlayerServiceInterface;
@@ -38,6 +39,10 @@ class PlayersService implements PlayersServiceInterface
      */
     private $userService;
 
+    /**
+     * @var TournamentRepository
+     */
+    private $tournamentRepository;
 
     /**
      * PlayersService constructor.
@@ -45,16 +50,19 @@ class PlayersService implements PlayersServiceInterface
      * @param SnookerPlayerRepository $snookerPlayerRepository
      * @param UserPlayerServiceInterface $userPlayerService
      * @param UserServiceInterface $userService
+     * @param TournamentRepository $tournamentRepository
      */
     public function __construct(DartsPlayerRepository $dartsPlayerRepository,
                                 SnookerPlayerRepository $snookerPlayerRepository,
                                 UserPlayerServiceInterface $userPlayerService,
-                                UserServiceInterface $userService)
+                                UserServiceInterface $userService,
+                                TournamentRepository $tournamentRepository)
     {
         $this->dartsPlayerRepository = $dartsPlayerRepository;
         $this->snookerPlayerRepository = $snookerPlayerRepository;
         $this->userPlayerService = $userPlayerService;
         $this->userService = $userService;
+        $this->tournamentRepository = $tournamentRepository;
 
     }
 
@@ -67,6 +75,12 @@ class PlayersService implements PlayersServiceInterface
 
     public function removePlayers($players, string $type)
     {
+        $currentOrUpcomingTournaments = $this->tournamentRepository->findCurrentOrUpcomingTournament($type);
+
+        if ($currentOrUpcomingTournaments){
+            throw new \Symfony\Component\Config\Definition\Exception\Exception('There is still tournaments to play! You cant finish the season!');
+        }
+
         $repository = $type . 'PlayerRepository';
 
         /** @var PlayersDTO $players */

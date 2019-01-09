@@ -32,4 +32,22 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->persist($nextTournament);
         $this->_em->flush();
     }
+
+    public function findCurrentOrUpcomingTournament(string $type)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('t')
+            ->from('MyFantasyPlaceBundle:Tournament', 't')
+            ->where('t.status = :running or t.status = :upcoming')
+            ->andWhere('t.type = :type')
+            ->setParameter('running', 'running')
+            ->setParameter('upcoming', 'upcoming')
+            ->setParameter('type', $type)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

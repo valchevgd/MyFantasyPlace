@@ -78,7 +78,7 @@ class PlayersController extends Controller
     }
 
     /**
-     * @Route("/admin_remove_players{type}", name="admin_remove_players")
+     * @Route("/admin_remove_players/{type}", name="admin_remove_players")
      *
      * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
@@ -94,7 +94,7 @@ class PlayersController extends Controller
 
         if ($form->isSubmitted() and $form->isValid()) {
 
-
+        try{
             if ($this->playersService->removePlayers($players, $type)) {
                 $this->addFlash('message', 'Players are successfully removed, now is time to add new...');
             } else {
@@ -104,6 +104,13 @@ class PlayersController extends Controller
             return $this->redirectToRoute('admin_add_player', [
                 'type' => $type
             ]);
+        }catch (Exception $exception){
+            $this->addFlash('message',  $exception->getMessage());
+            return $this->redirectToRoute('start_tournament',[
+                'type' => $type
+            ]);
+        }
+
         }
 
         return $this->render('player/remove_players.html.twig', [
