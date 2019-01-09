@@ -46,8 +46,8 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        $usersSnookerRank = $this->userService->getRank('snooker', 5);
-        $usersDartsRank = $this->userService->getRank('darts', 5);
+        $usersSnookerRank = $this->userService->getRank('snooker', 'season' ,5);
+        $usersDartsRank = $this->userService->getRank('darts', 'season',5);
         $playersSnookerRank = $this->playerService->getRank('snooker');
         $playersDartsRank = $this->playerService->getRank('darts');
         $nextSnookerTournament = $this->tournamentService->getNext('snooker');

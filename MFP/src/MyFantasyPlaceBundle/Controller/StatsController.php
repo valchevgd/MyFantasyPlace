@@ -55,15 +55,16 @@ class StatsController extends Controller
     }
 
     /**
-     * @Route("/standing/{type}", name="standing")
+     * @Route("/standing/{type}/{period}", name="standing")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @param $type
+     * @param string $type
+     * @param string $period
      * @return Response
      */
-    public function showUsersStandingAction($type)
+    public function showUsersStandingAction(string $type, string $period)
     {
-        $usersRanking = $this->userService->getRank($type);
+        $usersRanking = $this->userService->getRank($type, $period);
 
         return $this->render('statistic/standing.html.twig',[
             'userRank' => $usersRanking,

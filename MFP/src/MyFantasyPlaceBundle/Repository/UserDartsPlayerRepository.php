@@ -3,6 +3,7 @@
 namespace MyFantasyPlaceBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use MyFantasyPlaceBundle\DTO\PlayerToViewDTO;
 use MyFantasyPlaceBundle\Entity\UserDartsPlayer;
 use Doctrine\ORM\Mapping;
 
@@ -19,7 +20,12 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(UserDartsPlayer::class));
     }
 
-    public function insert($transfer)
+    /**
+     * @param UserDartsPlayer $transfer
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insert(UserDartsPlayer $transfer)
     {
         $this->_em->persist($transfer);
         $this->_em->flush();
@@ -27,6 +33,10 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $id
+     * @return PlayerToViewDTO[]
+     */
     public function findPlayersToView($id)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -41,6 +51,11 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * @param UserDartsPlayer $relation
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function update(UserDartsPlayer $relation){
 
         $this->_em->persist($relation);
@@ -49,7 +64,13 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function findPlayerToView($userId, $playerId)
+    /**
+     * @param integer $userId
+     * @param integer $playerId
+     * @return PlayerToViewDTO
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findPlayerToView(int $userId,int $playerId)
     {
         $qb = $this->_em->createQueryBuilder();
 
@@ -65,6 +86,11 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @param $relation
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function delete($relation)
     {
         $this->_em->remove($relation);
@@ -73,6 +99,10 @@ class UserDartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function findUsers($id)
     {
         $qb = $this->_em->createQueryBuilder();

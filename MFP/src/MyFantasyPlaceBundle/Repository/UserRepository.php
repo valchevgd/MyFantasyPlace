@@ -19,6 +19,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(User::class));
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function createUser(User $user)
     {
         $this->_em->persist($user);
@@ -27,6 +32,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function updateUser(User $user)
     {
         $this->_em->merge($user);
@@ -35,6 +45,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param string $typeOfPointsToReset
+     * @param string $typeOfTransfer
+     * @return bool
+     */
     public function restartUsersForTournament(string $typeOfPointsToReset, string $typeOfTransfer)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -49,6 +64,10 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $typeOfPointsToReset
+     * @return bool
+     */
     public function restartUsersForSeason($typeOfPointsToReset)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -62,6 +81,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $user
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function removeUser($user)
     {
         $this->_em->remove($user);

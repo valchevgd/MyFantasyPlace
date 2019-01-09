@@ -5,11 +5,11 @@
          style="padding: 10px; border-radius: 15px; border: 4px solid darkgreen; background-color: green; color: white">
         <div class="row" style="padding: 10px; margin: 10px">
             <div style="margin: 10px">
-                <a href="{{ path('standing', {'type':'snooker'}) }}"
+                <a href="{{ path('standing', {'type':'snooker', 'period':'season'}) }}"
                    class="btn btn-outline-light">Snooker Standing</a>
             </div>
             <div style="margin: 10px">
-                <a href="{{ path('standing', {'type':'darts'}) }}"
+                <a href="{{ path('standing', {'type':'darts', 'period':'season'}) }}"
                    class="btn btn-outline-light">Darts Standing</a>
             </div>
         </div>
@@ -20,7 +20,10 @@
             <table border="1" style="border: white; text-align: center">
                 <tr>
                     <th colspan="2">Username</th>
-                    <th>Fantasy Points</th>
+                    <th><a href="{{ path('standing', {'type':type, 'period':'season'}) }}"
+                           style="color: white;">Season Fantasy Points</a></th>
+                    <th><a href="{{ path('standing', {'type':type, 'period':'tournament'}) }}"
+                           style="color: white">Tournament Fantasy Points</a></th>
                 </tr>
                 {% for user in userRank %}
                     <tr>
@@ -32,6 +35,11 @@
                             <td>{{ user.snookerSeasonPoints }}</td>
                         {% else %}
                             <td>{{ user.dartsSeasonPoints }}</td>
+                        {% endif %}
+                        {% if type == "snooker" %}
+                            <td>{{ user.snookerTournamentPoints }}</td>
+                        {% else %}
+                            <td>{{ user.dartsTournamentPoints }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}

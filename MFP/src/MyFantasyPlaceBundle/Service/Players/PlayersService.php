@@ -273,7 +273,6 @@ class PlayersService implements PlayersServiceInterface
             throw new Exception('There are still players with status "running"! Please update players first!');
         }
 
-
         $player->setNewValue(true);
         return $player = $this->$repository->update($player);
     }

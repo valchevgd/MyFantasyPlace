@@ -77,14 +77,14 @@ class UserService implements UserServiceInterface
         $role = $this->roleService->getRole('ROLE_USER');
         $user->addRole($role);
 
-        $this->userRepository->createUser($user);
+        return $this->userRepository->createUser($user);
 
     }
 
 
-    public function getRank(string $type, int $limit = null)
+    public function getRank(string $type, string $period,int $limit = null)
     {
-        $typeRank = $type.'SeasonPoints';
+        $typeRank = $type.ucfirst($period).'Points';
 
         $rank = $this->userRepository->findBy([],[$typeRank => 'desc'], $limit);
 

@@ -19,6 +19,11 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(Tournament::class));
     }
 
+    /**
+     * @param Tournament $tournament
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function insert(Tournament $tournament)
     {
         $this->_em->persist($tournament);
@@ -27,12 +32,24 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param Tournament $nextTournament
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function update(Tournament $nextTournament)
     {
         $this->_em->persist($nextTournament);
         $this->_em->flush();
+
+        return true;
     }
 
+    /**
+     * @param string $type
+     * @return Tournament
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findCurrentOrUpcomingTournament(string $type)
     {
         $qb = $this->_em->createQueryBuilder();

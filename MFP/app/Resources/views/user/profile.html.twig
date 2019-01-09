@@ -2,6 +2,11 @@
 
 {% block main %}
     <div class="container body-content">
+        {% for msg in app.session.flashBag.get('message') %}
+            <div class="alert alert-secondary ">
+                {{ msg }}
+            </div>
+        {% endfor %}
         <div class="form-group col-md-12"
              style="margin: 10px; padding: 10px; border-radius: 15px; background-color: green; color: white">
             <h2>{{ viewUser.username }}'s Profile</h2>

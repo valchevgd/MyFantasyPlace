@@ -2,6 +2,7 @@
 
 namespace MyFantasyPlaceBundle\Controller;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use MyFantasyPlaceBundle\DTO\ChangePasswordDTO;
 use MyFantasyPlaceBundle\Entity\User;
 use MyFantasyPlaceBundle\Form\ChangePasswordType;
@@ -100,12 +101,17 @@ class UserController extends Controller
             $email = $form->get('email')->getData();
 
             $user = $this->userService->prepareUser($user, $username, $email, $file);
-
-            if ($this->userService->update($user)) {
-                return $this->redirectToRoute('profile', [
-                    'id' => $id
-                ]);
+            try{
+                if ($this->userService->update($user)) {
+                    $this->addFlash('message', 'Update successful');
+                }
+            }catch (UniqueConstraintViolationException $exception) {
+                $this->addFlash('message', 'Username or email is already taken!');
             }
+
+            return $this->redirectToRoute('profile', [
+                'id' => $id
+            ]);
         }
 
         return $this->render('user/profile.html.twig', [
@@ -137,6 +143,7 @@ class UserController extends Controller
         if ($form->isSubmitted() and $form->isValid()) {
 
             if ($this->userService->changePassword($user, $newPassword)) {
+                $this->addFlash('message', 'Update successful');
                 return $this->redirectToRoute('profile', [
                     'id' => $user->getId()
                 ]);

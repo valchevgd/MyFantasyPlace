@@ -4,6 +4,7 @@ namespace MyFantasyPlaceBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
+use MyFantasyPlaceBundle\DTO\PlayerToViewDTO;
 use MyFantasyPlaceBundle\Entity\UserSnookerPlayer;
 
 /**
@@ -19,7 +20,12 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(UserSnookerPlayer::class));
     }
 
-    public function insert($transfer)
+    /**
+     * @param UserSnookerPlayer $transfer
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insert(UserSnookerPlayer $transfer)
     {
         $this->_em->persist($transfer);
         $this->_em->flush();
@@ -27,6 +33,10 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $id
+     * @return PlayerToViewDTO[]
+     */
     public function findPlayersToView($id)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -41,6 +51,11 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * @param UserSnookerPlayer $relation
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function update(UserSnookerPlayer $relation){
 
         $this->_em->persist($relation);
@@ -49,6 +64,13 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $userId
+     * @param $playerId
+     * @return PlayerToViewDTO
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findPlayerToView($userId, $playerId)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -66,6 +88,11 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    /**
+     * @param $relation
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function delete($relation)
     {
         $this->_em->remove($relation);
@@ -74,6 +101,10 @@ class UserSnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function findUsers($id)
     {
         $qb = $this->_em->createQueryBuilder();

@@ -14,6 +14,7 @@ use MyFantasyPlaceBundle\Entity\Role;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+
     public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($em, new Mapping\ClassMetadata(Role::class));

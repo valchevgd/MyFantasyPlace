@@ -98,8 +98,8 @@ class TournamentService implements TournamentServiceInterface
 
         $tournament->setStatus('finished');
 
-        $this->tournamentRepository->update($tournament);
-        return true;
+        return $this->tournamentRepository->update($tournament);
+
     }
 
 }

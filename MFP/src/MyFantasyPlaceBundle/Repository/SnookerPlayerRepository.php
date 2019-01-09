@@ -19,7 +19,12 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(SnookerPlayer::class));
     }
 
-    public function insert($player)
+    /**
+     * @param SnookerPlayer$player
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insert(SnookerPlayer $player)
     {
         $this->_em->persist($player);
         $this->_em->flush();
@@ -27,12 +32,24 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function remove($player)
+    /**
+     * @param SnookerPlayer $player
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(SnookerPlayer $player)
     {
         $this->_em->remove($player);
         $this->_em->flush();
+
+        return true;
     }
 
+    /**
+     * @param SnookerPlayer $snookerPlayer
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function update(SnookerPlayer $snookerPlayer)
     {
         $this->_em->merge($snookerPlayer);
@@ -41,6 +58,9 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function restartPlayersForTournament()
     {
         $qb = $this->_em->createQueryBuilder();
@@ -58,6 +78,9 @@ class SnookerPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function restartPlayersForSeason()
     {
         $qb = $this->_em->createQueryBuilder();

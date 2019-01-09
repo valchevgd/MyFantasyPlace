@@ -19,6 +19,11 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(DartsPlayer::class));
     }
 
+    /**
+     * @param DartsPlayer $player
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function insert(DartsPlayer $player)
     {
         $this->_em->persist($player);
@@ -27,7 +32,12 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function remove($player)
+    /**
+     * @param DartsPlayer $player
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(DartsPlayer $player)
     {
         $this->_em->remove($player);
         $this->_em->flush();
@@ -35,6 +45,11 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @param DartsPlayer $player
+     * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function update(DartsPlayer $player)
     {
         $this->_em->merge($player);
@@ -43,6 +58,9 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function restartPlayersForTournament()
     {
         $qb = $this->_em->createQueryBuilder();
@@ -61,6 +79,9 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function restartPlayersForSeason()
     {
         $qb = $this->_em->createQueryBuilder();
@@ -77,7 +98,5 @@ class DartsPlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return true;
     }
-
-
 
 }

@@ -124,9 +124,7 @@ class UserPlayerService implements UserPlayerServiceInterface
         if($this->$repository->update($relation)){
             $user->setFantasyTokens($user->getFantasyTokens() - $startingTokens);
 
-            $this->userService->update($user);
-
-            return true;
+            return $this->userService->update($user);
         }else{
             throw new Exception('Something went wrong!');
         }
@@ -159,8 +157,7 @@ class UserPlayerService implements UserPlayerServiceInterface
             $typeOfTransfer = 'set'.ucfirst($type).'Transfer';
             $user->$typeOfTransfer(false);
 
-            $this->userService->update($user);
-            return true;
+            return $this->userService->update($user);
         }
 
         return false;
