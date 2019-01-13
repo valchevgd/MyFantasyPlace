@@ -70,6 +70,10 @@ class UserPlayerService implements UserPlayerServiceInterface
             $players[$player->getName()] = $player;
         }
 
+        uasort($players, function ($p1, $p2){
+            return $p2->getValue() <=> $p1->getValue();
+        });
+
         return $players;
     }
 

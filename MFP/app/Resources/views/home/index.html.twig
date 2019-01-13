@@ -36,7 +36,7 @@
                         {% for user in usersSnookerRank %}
                             <tr>
 
-                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30"
+                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}"
                                          height="20"></td>
                                 <td><a href="{{ path('profile', {'id':user.id}) }}"
                                        style="color: white">{{ user.username }}</a></td>
@@ -60,7 +60,7 @@
                         </tr>
                         {% for user in usersDartsRank %}
                             <tr>
-                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}" width="30" height="20">
+                                <td><img src="{{ asset('uploads/images/' ~ user.image) }}" height="20">
                                 </td>
                                 <td><a href="{{ path('profile', {'id':user.id}) }}"
                                        style="color: white">{{ user.username }}</a></td>
