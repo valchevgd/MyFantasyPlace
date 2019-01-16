@@ -75,7 +75,7 @@ class User implements UserInterface
     /**
      * @var float
      *
-     * @ORM\Column(name="darts_team_value", type="float")
+     * @ORM\Column(name="darts_team_value", type="decimal", precision=4, scale=2)
      */
     private $dartsTeamValue = 28;
 
@@ -97,7 +97,7 @@ class User implements UserInterface
     /**
      * @var float
      *
-     * @ORM\Column(name="snooker_team_value", type="float")
+     * @ORM\Column(name="snooker_team_value", type="decimal", precision=4, scale=2)
      */
     private $snookerTeamValue = 28;
 
