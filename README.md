@@ -2,7 +2,7 @@
 
 ### About
 
-This is the project for my final exam on “PHP MVC Frameworks - Symfony” course at SoftUni. It is a fantasy sports manager. The whole project is created using Sympfony’s components, Doctrine and Twig. Also using base Bootstrap and MySQL as database.  
+This is the project for my final exam on “PHP MVC Frameworks - Symfony” course at SoftUni. It is a fantasy sports manager. The whole project is created using Sympfony, Doctrine and Twig. Also using base Bootstrap and MySQL as database.  
 
 
 ### Features
